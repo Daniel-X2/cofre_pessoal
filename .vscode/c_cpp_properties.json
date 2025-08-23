@@ -9,11 +9,11 @@
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x86",
             "compileCommands": [
-                "/home/daniel/Área de trabalho/teste com glade/.vscode/compile_commands.json"
+                ".vscode/compile_commands.json"
             ]
         }
     ],
     "version": 4
 }
-

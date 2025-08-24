@@ -2,7 +2,7 @@
   {
     "arguments": [
       "/usr/bin/gcc",
-      "-c",
+      
       "-I/usr/include/gtk-3.0",
       "-I/usr/include/pango-1.0",
       "-I/usr/include/cloudproviders",
@@ -25,9 +25,14 @@
       "-I/usr/include/blkid",
       "-I/usr/include/sysprof-6",
       "-pthread",
+      
+      "-Iinclude",
+      
       "-o",
       "meuapp",
-      "main.c"
+      
+      "main.c",
+      "diretorio.c"
     ],
     "directory": "/home/daniel/Área de trabalho/teste com glade",
     "file": "/home/daniel/Área de trabalho/teste com glade/src/main.c",

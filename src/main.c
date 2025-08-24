@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
+#include "../include/diretorio.h"
 
 void config_init(GtkWidget *window);
 int botao();
@@ -10,8 +11,18 @@ int main(int argc, char *argv[]) {
     GtkWidget *buttom; 
 
     gtk_init(&argc, &argv);
- //config_init(window);
-    builder = gtk_builder_new_from_file("");//depois mudar o arquivo .glade pra xml
+
+    char *caminho=encontrar_diretorio("../layout/interface.glade");
+    
+    
+    if (!caminho)
+    {
+        fprintf(stderr, "Arquivo não encontrado!\n");
+        return 0;
+    }
+    builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+    free(caminho);
+
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     
     //int **ponteiro=window;
@@ -24,7 +35,7 @@ int main(int argc, char *argv[]) {
     
    
 
-    return 0;
+    return 1;
 }
 void config_init(GtkWidget *window)
 {   
@@ -36,16 +47,5 @@ int botao()
     return 1;
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 

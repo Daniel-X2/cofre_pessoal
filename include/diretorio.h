@@ -3,10 +3,4 @@
 
 char* encontrar_diretorio(char file_name[]);
 
-
-
-
-
-
-
 #endif 

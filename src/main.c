@@ -1,20 +1,25 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include "../include/diretorio.h"
+GtkBuilder * builder;
+GtkWidget * window;
+GtkWidget * botao_nota;
+GtkWidget * lixeira;
+GtkWidget * senhas;
+
+void botao_senhas();
 
 void config_init(GtkWidget *window);
-int botao();
+void botao();
+void botao_lixeira();
+void botao_notas();
 int main(int argc, char *argv[]) {
     
-    GtkBuilder *builder;
-    GtkWidget *window;
-    GtkWidget *buttom; 
-
+    
+    
     gtk_init(&argc, &argv);
 
     char *caminho=encontrar_diretorio("../layout/interface.glade");
-    
-    
     if (!caminho)
     {
         fprintf(stderr, "Arquivo não encontrado!\n");
@@ -24,12 +29,21 @@ int main(int argc, char *argv[]) {
     free(caminho);
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-    //gtk_css_provider_load_from_file()
-
-
+    //note=GTK_WIDGET(gtk_builder_get_object(builder,"ola"));
+    botao_nota=GTK_WIDGET(gtk_builder_get_object(builder,"notas"));
+    //janela_notas=GTK_WIDGET(gtk_builder_get_object(builder,"janela_anotacoes"));
+    //gtk_notebook_set_current_page(GTK_NOTEBOOK(botao_notas),2);
+    lixeira=GTK_WIDGET(gtk_builder_get_object(builder,"botao_lixeira"));
     
-    //int **ponteiro=window;
-    //config_init(window);
+    senhas=GTK_WIDGET(gtk_builder_get_object(builder,"botao_senhas"));
+    
+    g_signal_connect(lixeira,"clicked",G_CALLBACK(botao_lixeira),NULL);
+    
+    g_signal_connect(senhas,"clicked",G_CALLBACK(botao_senhas),NULL);
+    
+    g_signal_connect(botao_nota,"clicked",G_CALLBACK(botao_notas),NULL);
+    
+   
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     //printf("ola mundo");
@@ -40,15 +54,27 @@ int main(int argc, char *argv[]) {
 
     return 1;
 }
-void config_init(GtkWidget *window)
-{   
-    gtk_window_set_default_size(GTK_WINDOW(window),400,400);
-}
-int botao()
+void botao_notas()
 {
+    GtkWidget * janela_note1;
 
-    return 1;
 
+    janela_note1=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
+    //janela_notas=GTK_WIDGET(gtk_builder_get_object(builder,"janela_anotacoes"));
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note1),0);
 }
+void botao_lixeira()
+{
+    GtkWidget * janela_note3;
+    janela_note3=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
 
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note3),2);
+    
+}
+void botao_senhas()
+{
+    GtkWidget * janela_note2;
+    janela_note2=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
 
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note2),1);
+}

@@ -24,6 +24,9 @@ int main(int argc, char *argv[]) {
     free(caminho);
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
+    //gtk_css_provider_load_from_file()
+
+
     
     //int **ponteiro=window;
     //config_init(window);

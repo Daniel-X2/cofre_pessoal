@@ -9,8 +9,7 @@ GtkWidget * senhas;
 
 void botao_senhas();
 
-void config_init(GtkWidget *window);
-void botao();
+
 void botao_lixeira();
 void botao_notas();
 int main(int argc, char *argv[]) {

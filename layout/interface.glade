@@ -51,7 +51,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="favorito">
                 <property name="label" translatable="yes">favoritos</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>

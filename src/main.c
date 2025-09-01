@@ -6,7 +6,11 @@ GtkWidget * window;
 GtkWidget * botao_nota;
 GtkWidget * lixeira;
 GtkWidget * senhas;
+GtkWidget * input_nome;
 
+GtkWidget * teste;
+
+void botao();
 void botao_senhas();
 
 
@@ -26,6 +30,21 @@ int main(int argc, char *argv[]) {
     }
     builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
     free(caminho);
+    teste=GTK_WIDGET(gtk_builder_get_object(builder,"favorito"));
+    g_signal_connect(teste,"clicked",G_CALLBACK(botao),NULL);
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
     //note=GTK_WIDGET(gtk_builder_get_object(builder,"ola"));
@@ -76,4 +95,15 @@ void botao_senhas()
     janela_note2=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
 
     gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note2),1);
+}
+
+
+void botao()
+{
+    
+    input_nome=GTK_WIDGET(gtk_builder_get_object(builder,"input_item"));
+    
+    const gchar *n1=gtk_entry_get_text(GTK_ENTRY(input_nome));
+    printf("%s\n",n1);
+
 }

@@ -206,7 +206,20 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <placeholder/>
+                          <object class="GtkButton" id="botao_confirmar">
+                            <property name="label">gtk-ok</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="receives-default">True</property>
+                            <property name="halign">center</property>
+                            <property name="margin-top">27</property>
+                            <property name="use-stock">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">5</property>
+                          </packing>
                         </child>
                         <child>
                           <placeholder/>
@@ -275,7 +288,9 @@
                             <property name="can-focus">True</property>
                             <property name="has-tooltip">True</property>
                             <property name="wrap-mode">word</property>
-                            <property name="top-margin">11</property>
+                            <property name="top-margin">29</property>
+                            <property name="bottom-margin">22</property>
+                            <property name="input-purpose">name</property>
                             <property name="monospace">True</property>
                           </object>
                           <packing>

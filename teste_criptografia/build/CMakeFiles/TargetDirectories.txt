@@ -1,0 +1,3 @@
+/home/daniel/Área de trabalho/teste_criptografia/build/CMakeFiles/meu_app.dir
+/home/daniel/Área de trabalho/teste_criptografia/build/CMakeFiles/edit_cache.dir
+/home/daniel/Área de trabalho/teste_criptografia/build/CMakeFiles/rebuild_cache.dir

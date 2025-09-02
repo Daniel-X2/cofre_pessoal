@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(teste_criptografia C)
+project(teste_com_glade C)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -12,7 +12,9 @@ pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 pkg_check_modules(SODIUM REQUIRED libsodium)
 
 # Cria o executável
-add_executable(meu_app main.c)
+add_executable(meu_app src/main.c src/diretorio.c)
+
+target_include_directories(meu_app PRIVATE ${GTK3_INCLUDE_DIRS})
 
 # Includes
 target_include_directories(meu_app PRIVATE ${GTK3_INCLUDE_DIRS} ${SODIUM_INCLUDE_DIRS})

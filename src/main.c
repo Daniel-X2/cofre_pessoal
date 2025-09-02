@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+
+
 #include <stdio.h>
 #include "../include/diretorio.h"
 GtkBuilder * builder;
@@ -29,7 +31,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
-    free(caminho);
+    //free(caminho);
     
     janela_note=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
     teste=GTK_WIDGET(gtk_builder_get_object(builder,"favorito"));

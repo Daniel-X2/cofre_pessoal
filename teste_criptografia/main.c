@@ -17,8 +17,7 @@ int main()
         
         return 1;
     }    
-    //char senha []="ola mano";
-   // int KEY_LEN=crypto_box_SEEDBYTES;
+    
 
     unsigned char salt[crypto_pwhash_SALTBYTES];
     unsigned char key[KEY_LEN];

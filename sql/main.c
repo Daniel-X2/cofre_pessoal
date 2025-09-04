@@ -4,7 +4,7 @@ sqlite3 * db;
 char *errMsg=0;
 int rc;
 
-int inserir_dados();
+int inserir_dados(char nome_item[],char nome_usuario[],char senha[]);
 int deletar_dados();
 int main ()
 {
@@ -38,7 +38,7 @@ int main ()
         fprintf(stderr,"erro SQL: %s\n",errMsg);
         sqlite3_free(errMsg);
     }
-    inserir_dados();
+    
 
     sqlite3_close(db);
     //vou jogar os ponteiros pra onde vou inserir os dados 
@@ -48,7 +48,7 @@ int main ()
 
 }
 
-int inserir_dados(nome_item,nome_usuario,senha)
+int inserir_dados(char nome_item[],char nome_usuario[],char senha[])
 {
     char teste[100];
     
@@ -69,4 +69,7 @@ int inserir_dados(nome_item,nome_usuario,senha)
 int deletar_dados()
 {
 
+    const char* sql="";
+    return 1;
+    
 }

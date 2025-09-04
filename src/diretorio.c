@@ -13,7 +13,7 @@ char* encontrar_diretorio (char diretorio[]) {
     sera necessario usar o free depois
     */
     char* caminho = realpath(diretorio, NULL);//
-    caminho="/home/daniel/Área de trabalho/teste_com_glade/layout/interface.glade";
+    caminho="/home/daniel/Área de trabalho/cofre_pessoal/layout/interface.glade";
     if (caminho != NULL) {
         printf("Absoluto: %s\n", caminho);
         //free(caminho);

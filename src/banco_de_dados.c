@@ -17,19 +17,9 @@ int init_sql ()
         return 1;
 
     }
-    const char *sql ="CREATE TABLE IF NOT EXISTS  anotacoes(id INTEGER PRIMARY KEY ,nome_item VARCHAR(30),descricao TEXT);";
-    rc = sqlite3_exec(db,sql,0,0,&errMsg);
-
+   
     
-    
-    if(rc!= SQLITE_OK)
-    {
-        fprintf(stderr,"erro SQL: %s\n",errMsg);
-        sqlite3_free(errMsg);
-    }
-
-    
-    sql="CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY ,nome_item VARCHAR(30),nome_usuario VARCHAR(50),senha TEXT);";
+    const char *sql="CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY ,nonce TEXT,salt VARCHAR TEXT,texto_cryptado TEXT);";
     rc = sqlite3_exec(db,sql,0,0,&errMsg);
 
     if(rc!= SQLITE_OK)
@@ -42,7 +32,7 @@ int init_sql ()
 
     
 
-    //sqlite3_close(db);
+    
     //vou jogar os ponteiros pra onde vou inserir os dados 
     // pra onde eu vou deletar os dados 
     //pra onde eu vou renomear algum dados 
@@ -50,13 +40,18 @@ int init_sql ()
 
 }
 
-int inserir_dados(const char nome_item[],const char nome_usuario[],const char senha[])
+int inserir_dados(char salt[],char nonce[],char texto_cryptado[])
 {
     
     char SQL_contatedado[100];
     
     
-    sprintf(SQL_contatedado,"INSERT INTO usuarios(nome_item,nome_usuario,senha) VALUES ('%s','%s','%s');",nome_item,nome_usuario,senha);
+    
+    sprintf(SQL_contatedado,"INSERT INTO usuarios(salt,nonce,texto_cryptado) VALUES ('%s','%s','%s');",salt,nonce,texto_cryptado);
+    
+   
+    
+        
     const char * sql=SQL_contatedado;
     
     rc= sqlite3_exec(db,sql,0,0,&errMsg);
@@ -99,6 +94,7 @@ int deletar_dados(int tabela,int id)
 }
 int update_dados(int tabela,int id,char nome_item[],char nome_usuario[],char senha[],char anotacoes[])
 {
+    //depois tenho que ajeitar essa logica pra quando descriptar ele poder atualizar e voltar criptado
      char SQL_concatenado[100];
     if(tabela==0)
     {
@@ -117,4 +113,8 @@ int update_dados(int tabela,int id,char nome_item[],char nome_usuario[],char sen
         sqlite3_free(errMsg);
         return 1;
     }
+}
+void fechar_banco()
+{
+    sqlite3_close(db);
 }

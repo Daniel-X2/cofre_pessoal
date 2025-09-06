@@ -1,7 +1,7 @@
 #ifndef BANCO_DE_DADOS
 #define BANCO_DE_DADOS
-
-int inserir_dados(const char nome_item[],const char nome_usuario[],const char senha[]);
+void fechar_banco();
+int inserir_dados(char salt[],char nonce[],char texto_cryptado[]);
 int deletar_dados(int tabela,int id);
 int update_dados(int tabela,int id,char nome_item[],char nome_usuario[],char senha[],char anotacoes[]);
 int init_sql ();

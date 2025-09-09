@@ -1,9 +1,24 @@
-#ifndef BANCO_DE_DADOS
-#define BANCO_DE_DADOS
-void fechar_banco();
-int inserir_dados(char salt[],char nonce[],char texto_cryptado[]);
-int deletar_dados(int tabela,int id);
-int update_dados(int tabela,int id,char nome_item[],char nome_usuario[],char senha[],char anotacoes[]);
-int init_sql ();
+#ifndef BANCO_DE_DADOS_H
+#define BANCO_DE_DADOS_H
 
-#endif
+#include <string>
+#include <sqlite3.h>
+
+struct Usuario {
+    std::string salt;
+    std::string nonce;
+    std::string texto_cryptado;
+};
+
+// Variáveis globais do DB
+extern sqlite3* db;
+extern char* errMsg;
+extern int rc;
+
+// Funções
+int init_sql();
+int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado);
+Usuario buscar_usuario(int id);
+void fechar_banco();
+
+#endif // BANCO_DE_DADOS_H

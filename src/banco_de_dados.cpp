@@ -1,6 +1,7 @@
 #include "../include/banco_de_dados.h"
 #include <iostream>
 #include <sodium.h>
+
 // Definição das variáveis globais
 sqlite3* db;
 char* errMsg = nullptr;

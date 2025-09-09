@@ -22,7 +22,7 @@ pkg_check_modules(SODIUM REQUIRED libsodium)
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 
 # Cria o executável
-add_executable(meu_app src/main.cpp src/crypto.cpp src/banco_de_dados.cpp) 
+add_executable(meu_app src/main.c src/crypto.cpp src/banco_de_dados.cpp src/diretorio.c src/init.cpp) 
 # aqui você pode adicionar arquivos C ou CPP
 
 # Includes

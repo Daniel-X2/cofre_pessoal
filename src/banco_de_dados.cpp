@@ -30,9 +30,13 @@ int init_sql() {
     return 0;
 }
 
-int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id)
+int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id,int update)
 {
-    
+    if (update==1)
+    {
+        atualizar_dados(salt,nonce,texto_cryptado,id);
+        return 0;
+    }
     char SQL_contatedado[2024];
     sprintf(SQL_contatedado,
             "INSERT INTO usuarios(salt,nonce,texto_cryptado) VALUES ('%s','%s','%s');",
@@ -73,7 +77,7 @@ Usuario buscar_usuario(int id) {
 }
 
 void fechar_banco() {
-    printf("ola aaqui no sql de fechar\n");
+    //printf("ola aaqui no sql de fechar\n");
     sqlite3_close(db);
 }
 int retorna_quantidade()
@@ -106,7 +110,7 @@ int atualizar_dados(const std::string& salt, const std::string& nonce, const std
     
     char SQL_contatedado[1024];
     sprintf(SQL_contatedado,
-            "UPDATE usuarios SET  salt = %s nonce =%s texto_cryptado= %s WHERE id = '%i';",
+            "UPDATE usuarios SET  salt = '%s' , nonce ='%s' ,  texto_cryptado = '%s' WHERE id = '%i';",
             salt.c_str(), nonce.c_str(), texto_cryptado.c_str(),id);
 
     rc = sqlite3_exec(db, SQL_contatedado, nullptr, nullptr, &errMsg);

@@ -38,13 +38,13 @@ int init_cripto(const char *senha,const char *messagem,int verificar_update,int 
     // Converter para Base64 e salvar
     if (verificar_update==0)
     {
-        if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id) != 0) 
+        if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id,0) != 0) 
         {
             return 1;
         }   
     }
     else{
-        if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id) != 0) 
+        if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id,1) != 0) 
         {
             return 1;
         }   
@@ -86,7 +86,7 @@ char* descriptografar(const char* senha, int id) {
     // Aloca buffer para C
     char* buffer = new char[decrypted.size() + 1]; // +1 para o '\0'
     strcpy(buffer, decrypted.c_str());
-    printf("ola mund %s\n",buffer);
+    //printf("ola mund %s\n",buffer);
     return buffer; // ⚠️ quem chamar deve liberar com delete[]
 }
 

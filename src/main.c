@@ -18,18 +18,21 @@ GtkWidget * input_nome;
 GtkWidget * input_nome_item;
 GtkWidget * input_senha;
 GtkWidget * janela_note;
+GtkWidget * container;
+GtkWidget * botao_atualizar;
+
 void laco();
 
 void entry_janela1();
-
-void botao_senhas(const char *nome_item,int id);
+void destruir_filhos(GtkWidget *widget, gpointer data);
+void atualizar_lista(char *nome_item,int id);
 void conectar_botoes();
 void confirmar_entrada();
 void botao_lixeira();
 void botao_notas();
 void cancelar_entrada();
 void get_object_gtk();
-void separar( char *dados);
+ char *separar( char *dados);
 int main(int argc, char *argv[]) {
     
     
@@ -53,8 +56,8 @@ int main(int argc, char *argv[]) {
     //init_criptografia("iae","8787");
     conectar_botoes();
     gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
-    
-    
+   // laco();
+    laco();
    
     
     //printf("ola mundo");
@@ -74,20 +77,26 @@ void botao_lixeira()
 {
     gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),2);
 }
-void botao_senhas(const char *nome_item,int id)
+void atualizar_lista(char *nome_item,int id)
 {
     //gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
     GtkWidget *box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
     // Criar um botão novo
-    const gchar *teste=nome_item;
-    printf("%s",nome_item);
-    GtkWidget *btn = gtk_button_new_with_label(teste);
-    char *id_button;
+     char *nome =separar(nome_item);
+
+    const gchar *testes=nome;
+    
+    GtkWidget *btn = gtk_button_new_with_label(testes);
+    char id_button[200];
+    sprintf(id_button,"%i",id);
+    int *pid = malloc(sizeof(int));
+    *pid = id;
+    g_signal_connect(btn,"clicked",G_CALLBACK(teste),pid);
 
     //sprintf(id_button,"%s",id);/////////////
 
 
-    gtk_widget_set_name(btn,"id_button");
+    gtk_widget_set_name(btn,id_button);
 
 
     // Adicionar no box
@@ -109,6 +118,7 @@ void entry_janela1()
 }
 void get_object_gtk()
 {
+    
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
 
     janela_note=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
@@ -116,35 +126,49 @@ void get_object_gtk()
     confirmar=GTK_WIDGET(gtk_builder_get_object(builder,"confirmar"));
     cancelar=GTK_WIDGET(gtk_builder_get_object(builder,"cancelar"));
     
+    botao_atualizar=GTK_WIDGET(gtk_builder_get_object(builder,"botao_atualizar"));
+
     senhas=GTK_WIDGET(gtk_builder_get_object(builder,"botao_senha"));
     
     input_nome=GTK_WIDGET(gtk_builder_get_object(builder,"input_usuario"));
     input_nome_item=GTK_WIDGET(gtk_builder_get_object(builder,"input_item"));
     input_senha=GTK_WIDGET(gtk_builder_get_object(builder,"input_senha"));
-
+    container=GTK_WIDGET(gtk_builder_get_object(builder,"container"));
 }   
 void conectar_botoes()
 {
     
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
-    g_signal_connect(senhas,"clicked",G_CALLBACK(laco),NULL);
+    g_signal_connect(botao_atualizar,"clicked",G_CALLBACK(laco),NULL);
     g_signal_connect(confirmar,"clicked",G_CALLBACK(confirmar_entrada),NULL);
     g_signal_connect(cancelar,"clicked",G_CALLBACK(cancelar_entrada),NULL);
+
 }
-void separar( char *dados)
+ char* separar( char *dados)
 {
     
-    char *nome_item= strtok(dados,"|||");
+     char *nome_item= strtok(dados,"|||");
     char *senha=strtok(NULL,"|||");
     char *nome=strtok(NULL,"|||");
 
-    printf("ola mano %s %s %s\n",nome,senha,nome_item);
+    return nome_item;
     
     
 }
+void destruir_filhos(GtkWidget *widget, gpointer data) {
+    gtk_widget_destroy(widget);
+}
+
+
+
+
 void laco()
 {
+
+    
+   gtk_container_foreach(GTK_CONTAINER(container), destruir_filhos, NULL);
+
     unsigned int quantidade_de_linhas=verificar_quantidade();
     
     for (int c =1;c<=quantidade_de_linhas;c++)
@@ -154,7 +178,7 @@ void laco()
         char n2[1000];
         sprintf(n2,"%s",n3);
         
-        botao_senhas(n2,c);
+        atualizar_lista(n2,c);
     }
 }
 void cancelar_entrada()

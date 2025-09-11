@@ -20,7 +20,8 @@ UPDATE nome_tabela SET idade = 26 WHERE id = '1';
 
 INSERT INTO usuarios(nonce,salt,texto_cryptado) VALUES ('daniel nesse teste','nome do usuario','aqui e a senha criptograda')
 
-DELETE FROM nome_tabela WHERE nome = 'Maria';
+DELETE FROM usuarios WHERE id = 7 ;
 
 SELECT * FROM nome_tabela;
 
+UPDATE usuarios SET  salt = 'g' nonce = 'funcionou'  texto_cryptado = 'g' WHERE id = 1

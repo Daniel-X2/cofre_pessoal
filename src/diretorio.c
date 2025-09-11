@@ -15,12 +15,12 @@ char* encontrar_diretorio (char diretorio[]) {
     char* caminho = realpath(diretorio, NULL);//
     //caminho="/home/daniel/Área de trabalho/cofre_pessoal/layout/interface.glade";
     if (caminho != NULL) {
-        printf("Absoluto: %s\n", caminho);
+        //printf("Absoluto: %s\n", caminho);
         //free(caminho);
         return caminho;
     } else {
         perror("Erro ao resolver caminho"); // mostra o motivo
-        printf("foi nao man\n");
+        //printf("foi nao man\n");
         free(caminho);
     }
 }

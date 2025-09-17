@@ -1,26 +1,36 @@
+
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include "../include/diretorio.h"
 
-char* encontrar_diretorio (char diretorio[]) {
-    /*
-    char diretorio= "../layout/interface.glade"
-    se eu quero que o diretorio volte sera necessario . ou .. pra voltar a diretorios anteriores 
-    e resolver o caminho absoluto
+#ifdef _WIN32
+#include <windows.h>
+#include <direct.h>
+#endif
 
-    sera necessario usar o free depois
-    */
-    char* caminho = realpath(diretorio, NULL);//
-    //caminho="/home/daniel/Área de trabalho/cofre_pessoal/layout/interface.glade";
+
+char* encontrar_diretorio(char diretorio[]) {
+#ifdef _WIN32
+    // Windows: usa _fullpath
+    char* abs_path = (char*)malloc(_MAX_PATH);
+    if (_fullpath(abs_path, diretorio, _MAX_PATH) != NULL) {
+        return abs_path;
+    } else {
+        perror("Erro ao resolver caminho");
+        free(abs_path);
+        return NULL;
+    }
+#else
+    // Unix: usa realpath
+    char* caminho = realpath(diretorio, NULL);
+    
     if (caminho != NULL) {
-        //printf("Absoluto: %s\n", caminho);
-        //free(caminho);
         return caminho;
     } else {
-        perror("Erro ao resolver caminho"); // mostra o motivo
-        //printf("foi nao man\n");
+        perror("Erro ao resolver caminho");
         free(caminho);
+        return NULL;
     }
+#endif
 }

@@ -1,3 +1,8 @@
+/**
+ * @file init.cpp
+ * @brief Funções de inicialização, criptografia, descriptografia e integração entre C e C++ para o cofre pessoal.
+ */
+
 #include <sodium.h>
 #include "../include/banco_de_dados.h"
 #include "../include/crypto.h"
@@ -6,27 +11,27 @@
 #include <iostream>
 #include <sodium.h>
 #include <string.h>
-    
-
 #include <vector>
 
-
-int init_cripto(const char *senha,const char *messagem,int verificar_update,int id) {
+/**
+ * @brief Inicializa a criptografia, gera salt, chave, nonce e cifra a mensagem, salvando no banco de dados.
+ * @param senha Senha em texto puro para derivação da chave.
+ * @param messagem Mensagem a ser criptografada.
+ * @param verificar_update Se 0, insere novo registro; se 1, atualiza registro existente.
+ * @param id Identificador do usuário.
+ * @return 0 em caso de sucesso, 1 em caso de erro.
+ */
+int init_cripto(const char *senha, const char *messagem, int verificar_update, int id) {
     if(sodium_init() < 0) 
     {
         
         return 1;
     }
-    //init_sql();
+    
     
     const std::string SENHA = senha;
     const std::string MESSAGE = messagem;
-    // Banco
-    //if (init_sql() != 0) 
-    //{
-    //return 1;
-   // }
-    // Salt + key
+    
     std::vector<unsigned char> salt(crypto_pwhash_SALTBYTES);
     randombytes_buf(salt.data(), salt.size());
     std::vector<unsigned char> key = generate_key(SENHA, salt);
@@ -40,30 +45,24 @@ int init_cripto(const char *senha,const char *messagem,int verificar_update,int 
     {
         if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id,0) != 0) 
         {
-            return 1;
+            return 0;
         }   
     }
     else{
         if (inserir_dados(to_base64(salt), to_base64(nonce), to_base64(cipher),id,1) != 0) 
         {
-            return 1;
+            return 0;
         }   
     }
     
     // Recuperar e descriptografar
-   return 1;
+   return 0;
 }
-
 
 
 // Sua função de descriptografia
 char* descriptografar(const char* senha, int id) {
-    // Inicializa SQL
-    //if (init_sql() != 0) {
-      //  std::cerr << "Falha ao inicializar o banco de dados." << std::endl;
-        //return nullptr;
-    //}
-
+    
     // Pega usuário do banco
     Usuario u = buscar_usuario(id);
 
@@ -100,9 +99,11 @@ int verificar_quantidade()
 }
 void fechar_banco_init()
 {
+    // essa funçao serve como uma ponte entre arquivos c e c++
     fechar_banco();
 }
 void iniciar_banco()
 {
+    // essa funçao serve como uma ponte entre arquivos c e c++
     init_sql();
 }

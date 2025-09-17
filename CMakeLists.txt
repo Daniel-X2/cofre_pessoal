@@ -22,7 +22,7 @@ pkg_check_modules(SODIUM REQUIRED libsodium)
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 
 # Cria o executável
-add_executable(meu_app src/main.c src/crypto.cpp src/banco_de_dados.cpp src/diretorio.c src/init.cpp src/teste.c) 
+add_executable(meu_app src/main.c src/crypto.cpp src/banco_de_dados.cpp src/diretorio.c src/init.cpp src/janela.c) 
 # aqui você pode adicionar arquivos C ou CPP
 
 # Includes
@@ -48,3 +48,5 @@ target_link_libraries(meu_app PRIVATE
 
 # Gera compile_commands.json (bom para ferramentas como clangd)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+

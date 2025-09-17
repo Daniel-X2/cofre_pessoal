@@ -1,15 +1,25 @@
+/**
+ * @file banco_de_dados.cpp
+ * @brief Implementação das funções de manipulação do banco de dados SQLite para o cofre pessoal.
+ */
+
 #include "../include/banco_de_dados.h"
 #include <iostream>
 #include <sodium.h>
+#include <string.h>
 
-// Definição das variáveis globais
+// Variáveis globais para conexão e controle do banco de dados
 sqlite3* db;
 char* errMsg = nullptr;
 int rc;
 
+/**
+ * @brief Inicializa o banco de dados SQLite e cria a tabela de usuários, se não existir.
+ * @return 0 em caso de sucesso, 1 em caso de erro.
+ */
 int init_sql() {
     
-    rc = sqlite3_open("/home/daniel/Área de trabalho/cofre_pessoal/meu_banco.db", &db);
+    rc = sqlite3_open("meu_banco.db", &db);
     
     if (rc!= SQLITE_OK) {
         std::cerr << "Erro ao abrir banco: " << sqlite3_errmsg(db) << std::endl;
@@ -30,27 +40,48 @@ int init_sql() {
     return 0;
 }
 
-int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id,int update)
+/**
+ * @brief Insere ou atualiza dados criptografados de um usuário na tabela.
+ * @param salt Sal gerado para derivação de chave.
+ * @param nonce Nonce utilizado na criptografia.
+ * @param texto_cryptado Texto criptografado (senha ou dados).
+ * @param id Identificador do usuário (usado para update).
+ * @param update Se 1, realiza update; se 0, realiza insert.
+ * @return 0 em caso de sucesso, 1 em caso de erro.
+ */
+int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id, int update)
 {
-    if (update==1)
-    {
-        atualizar_dados(salt,nonce,texto_cryptado,id);
-        return 0;
+    if (update == 1) {
+        return atualizar_dados(salt, nonce, texto_cryptado, id);
     }
-    char SQL_contatedado[2024];
-    sprintf(SQL_contatedado,
-            "INSERT INTO usuarios(salt,nonce,texto_cryptado) VALUES ('%s','%s','%s');",
-            salt.c_str(), nonce.c_str(), texto_cryptado.c_str());
-    int n1 = sqlite3_exec(db, SQL_contatedado, nullptr, nullptr, &errMsg);
 
-    if (n1 != SQLITE_OK) {
-        std::cerr << "Erro ao adicionar ao banco: " << errMsg << std::endl;
-        sqlite3_free(errMsg);
+    const char* sql = "INSERT INTO usuarios(salt, nonce, texto_cryptado) VALUES (?, ?, ?);";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erro ao preparar insert: " << sqlite3_errmsg(db) << std::endl;
         return 1;
     }
+
+    sqlite3_bind_text(stmt, 1, salt.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, nonce.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, texto_cryptado.c_str(), -1, SQLITE_TRANSIENT);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Erro ao inserir dados: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        return 1;
+    }
+
+    sqlite3_finalize(stmt);
     return 0;
 }
 
+/**
+ * @brief Busca os dados criptografados de um usuário pelo id.
+ * @param id Identificador do usuário.
+ * @return Struct Usuario preenchida com salt, nonce e texto_cryptado.
+ */
 Usuario buscar_usuario(int id) {
     Usuario u;
     sqlite3_stmt* stmt;
@@ -76,48 +107,72 @@ Usuario buscar_usuario(int id) {
     return u;
 }
 
+/**
+ * @brief Fecha a conexão com o banco de dados SQLite.
+ */
 void fechar_banco() {
     //printf("ola aaqui no sql de fechar\n");
     sqlite3_close(db);
 }
+
+/**
+ * @brief Retorna a quantidade de usuários cadastrados na tabela.
+ * @return Número de usuários cadastrados, ou -1 em caso de erro.
+ */
 int retorna_quantidade()
 {
     //init_sql();
     const char* SQL = "SELECT COUNT(*) FROM usuarios;";
-sqlite3_stmt* stmt;
-int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, nullptr);
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, nullptr);
 
 
 
-if (rc != SQLITE_OK) {
-    printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
-    return -1;
-}
-
-rc = sqlite3_step(stmt);
-if (rc == SQLITE_ROW) {
-    
-}
-int total = sqlite3_column_int(stmt, 0);  // pega o COUNT(*)
-    return total;
-sqlite3_finalize(stmt);
-
-}
-int atualizar_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado,int id)
-{
-   
-
-    
-    char SQL_contatedado[1024];
-    sprintf(SQL_contatedado,
-            "UPDATE usuarios SET  salt = '%s' , nonce ='%s' ,  texto_cryptado = '%s' WHERE id = '%i';",
-            salt.c_str(), nonce.c_str(), texto_cryptado.c_str(),id);
-
-    rc = sqlite3_exec(db, SQL_contatedado, nullptr, nullptr, &errMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "Erro ao adicionar ao banco: " << errMsg << std::endl;
-        sqlite3_free(errMsg);
+        printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+    
+    }
+    int total = sqlite3_column_int(stmt, 0);  // pega o COUNT(*)
+    sqlite3_finalize(stmt);
+    return total;
+
+
+}
+
+/**
+ * @brief Atualiza os dados criptografados de um usuário existente.
+ * @param salt Novo sal.
+ * @param nonce Novo nonce.
+ * @param texto_cryptado Novo texto criptografado.
+ * @param id Identificador do usuário a ser atualizado.
+ * @return 0 em caso de sucesso, 1 em caso de erro.
+ */
+int atualizar_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id)
+{
+    const char* sql = "UPDATE usuarios SET salt = ?, nonce = ?, texto_cryptado = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Erro ao preparar update: " << sqlite3_errmsg(db) << std::endl;
         return 1;
     }
+
+    sqlite3_bind_text(stmt, 1, salt.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, nonce.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, texto_cryptado.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 4, id);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Erro ao atualizar dados: " << sqlite3_errmsg(db) << std::endl;
+        sqlite3_finalize(stmt);
+        return 1;
+    }
+
+    sqlite3_finalize(stmt);
     return 0;
 }

@@ -1,97 +1,118 @@
-# cofre _pessoal
-Descrição
 
-[Um aplicativo de desktop seguro para gerenciamento de notas, que utiliza criptografia para proteger os dados do usuário.]
 
-Este projeto é uma aplicação de desktop desenvolvida em C, que combina uma interface de usuário elegante e nativa com o GTK+ 3, um sistema de banco de dados leve e eficiente com o SQLite, e um forte sistema de criptografia com a biblioteca libsodium.
+````md
+# Cofre Pessoal
 
-Tecnologias Usadas
+## 📌 Descrição
+Um aplicativo de desktop seguro para gerenciamento de notas, que utiliza criptografia para proteger os dados do usuário.
 
-    Linguagem de Programação: C/C++
+Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:  
+- Uma interface de usuário elegante e nativa com **GTK+ 3**;  
+- Um sistema de banco de dados leve e eficiente com **SQLite**;  
+- Um forte sistema de criptografia com a biblioteca **libsodium**.  
 
-    Interface Gráfica: GTK+ 3
+---
 
-    Banco de Dados: SQLite
+## 🚀 Tecnologias Usadas
+- **Linguagem de Programação:** C/C++  
+- **Interface Gráfica:** GTK+ 3  
+- **Banco de Dados:** SQLite  
+- **Criptografia:** libsodium  
+- **Sistema de Build:** CMake  
 
-    Criptografia: libsodium
-    
-    Sistema de Build: CMake
-Requisitos
+---
 
+## 📦 Requisitos
 Para compilar e executar o projeto, você precisará ter as seguintes bibliotecas instaladas no seu sistema:
-    
-    CMake: Para gerenciar o processo de build.
-    
-    GTK+ 3: libgtk-3-dev
 
-    SQLite3: libsqlite3-dev
+- CMake  
+- GTK+ 3 (`libgtk-3-dev`)  
+- SQLite3 (`libsqlite3-dev`)  
+- libsodium (`libsodium-dev`)  
 
-    libsodium: libsodium-dev
+---
 
-Instalação no Debian/Ubuntu
+## 🛠 Instalação
 
-Bash
-
+### Debian/Ubuntu
+```bash
 sudo apt-get install libgtk-3-dev libsqlite3-dev libsodium-dev cmake
+````
 
-Instalação no Fedora
+### Fedora
 
-Bash
-
+```bash
 sudo dnf install gtk3-devel sqlite-devel libsodium-devel cmake
+```
 
-Instalação no Arch Linux
+### Arch Linux
 
-Bash
-
+```bash
 sudo pacman -S gtk3 sqlite libsodium cmake
+```
 
-Compilação
+---
 
-O projeto usa o CMake para gerenciar a compilação. Siga os passos abaixo:
+## ⚙️ Compilação
 
-    Crie um diretório de build e entre nele:
-    Bash
+O projeto usa o **CMake** para gerenciar a compilação.
 
-mkdir build
-cd build
+1. Crie um diretório de build e entre nele:
 
-Execute o CMake para configurar o projeto. O .. indica que o arquivo CMakeLists.txt está no diretório pai.
-Bash
+   ```bash
+   mkdir build
+   cd build
+   ```
 
-cmake ..
+2. Configure o projeto (o `..` indica que o `CMakeLists.txt` está no diretório pai):
 
-Compile o projeto:
-Bash
+   ```bash
+   cmake ..
+   ```
 
-    make
+3. Compile:
 
-Como Executar
+   ```bash
+   make
+   ```
 
-Após a compilação, o executável estará no diretório build. Você pode executá-lo com o comando:
-Bash
+---
 
-./build/[NOME_DO_EXECUTAVEL]
+## ▶️ Como Executar
 
-Exemplo:
+Após a compilação, o executável estará no diretório `build`.
 
-o nome do executável esta como meu_app no  CMakeLists.txt:
-Bash
+Exemplo (supondo que no `CMakeLists.txt` o executável se chame `meu_app`):
 
+```bash
 ./build/meu_app
+```
 
-Contribuição
+---
 
-Contribuições são bem-vindas! Se você quiser contribuir, por favor, abra uma issue para discutir as mudanças propostas ou crie um pull request com suas alterações.
+## 🤝 Contribuição
 
-Licença
+Contribuições são bem-vindas!
 
-Este projeto está licenciado sob a Licença [MIT]. Veja o arquivo [NOME DO ARQUIVO DA LICENÇA] para mais detalhes.
+* Abra uma *issue* para discutir mudanças propostas;
+* Ou envie um *pull request* com suas alterações.
 
-Autor
+---
 
-[Daniel-X2]
+## 📄 Licença
 
-    GitHub: [https://github.com/Daniel-X2]
-    Linkedln [https://www.linkedin.com/in/daniel-da-silva-32814636b/]
-    
+Este projeto está licenciado sob a Licença **MIT**.
+Veja o arquivo [`LICENSE`](LICENSE) para mais detalhes.
+
+---
+
+## 👨‍💻 Autor
+
+**Daniel-X2**
+
+* GitHub: [github.com/Daniel-X2](https://github.com/Daniel-X2)
+* LinkedIn: [linkedin.com/in/daniel-da-silva-32814636b](https://www.linkedin.com/in/daniel-da-silva-32814636b/)
+
+
+
+

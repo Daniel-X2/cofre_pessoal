@@ -1,9 +1,9 @@
 
 
 ````md
-# Cofre Pessoal
+### Cofre Pessoal
 
-## 📌 Descrição
+### 📌 Descrição
 Um aplicativo de desktop seguro para gerenciamento de notas, que utiliza criptografia para proteger os dados do usuário.
 
 Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:  
@@ -13,7 +13,7 @@ Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:
 
 ---
 
-## 🚀 Tecnologias Usadas
+### 🚀 Tecnologias Usadas
 - **Linguagem de Programação:** C/C++  
 - **Interface Gráfica:** GTK+ 3  
 - **Banco de Dados:** SQLite  
@@ -22,7 +22,7 @@ Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:
 
 ---
 
-## 📦 Requisitos
+### 📦 Requisitos
 Para compilar e executar o projeto, você precisará ter as seguintes bibliotecas instaladas no seu sistema:
 
 - CMake  
@@ -32,7 +32,7 @@ Para compilar e executar o projeto, você precisará ter as seguintes biblioteca
 
 ---
 
-## 🛠 Instalação
+### 🛠 Instalação
 
 ### Debian/Ubuntu
 ```bash

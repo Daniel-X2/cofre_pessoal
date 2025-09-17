@@ -5,24 +5,24 @@
 
 
 ### 📌 Descrição
-````md
+
 Um aplicativo de desktop seguro para gerenciamento de notas, que utiliza criptografia para proteger os dados do usuário.
 
 Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:  
 - Uma interface de usuário elegante e nativa com **GTK+ 3**;  
 - Um sistema de banco de dados leve e eficiente com **SQLite**;  
 - Um forte sistema de criptografia com a biblioteca **libsodium**.  
-````
+
 ---
 
 ### 🚀 Tecnologias Usadas
-```
+
 - **Linguagem de Programação:** C/C++  
 - **Interface Gráfica:** GTK+ 3  
 - **Banco de Dados:** SQLite  
 - **Criptografia:** libsodium  
 - **Sistema de Build:** CMake  
-```
+
 ---
 
 ### 📦 Requisitos

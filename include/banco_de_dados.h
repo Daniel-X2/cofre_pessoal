@@ -16,11 +16,11 @@ extern char* errMsg;
 extern int rc;
 
 // Funções
-int retorna_quantidade();
+int *retorna_quantidade();
 int atualizar_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado,int id);
 int init_sql();
 int inserir_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado,int id,int update);
 Usuario buscar_usuario(int id);
 void fechar_banco();
-
+void deletar(int id);
 #endif // BANCO_DE_DADOS_H

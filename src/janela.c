@@ -9,7 +9,7 @@
 #include "../include/init.h"
 #include <string.h>
 #include "../include/janela.h"
-
+#include "../include/funcoes_main.h"
 // Variáveis globais para os widgets da janela de atualização
 GtkWidget *window2;                ///< Janela de atualização de dados
 GtkBuilder *builder_window2;       ///< Builder para carregar o layout Glade
@@ -36,7 +36,7 @@ int window_dados(GtkWidget *widget, gpointer user_data);
  * 
  * Lê os dados dos campos de entrada, concatena e chama a função de atualização criptografada.
  */
-void alterar();
+
 
     GtkWidget * window2;
     GtkBuilder * builder_window2;
@@ -44,6 +44,7 @@ void alterar();
     GtkWidget * input_nome_window2;
     GtkWidget * input_senha_window2;
     GtkWidget * botao_alterar;
+    GtkWidget * botao_deletar;
 int id;
 
 
@@ -53,12 +54,27 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
 
     char *caminho=encontrar_diretorio("./layout/atualizar_dados.glade");
     if (!caminho)
+    {   
+        free(caminho);
+        char *caminho=encontrar_diretorio("../layout/atualizar_dados.glade");
+        fprintf(stderr, "Segunda tentativa!\n");
+        if (!caminho)
+        {
+            fprintf(stderr, "diretorio nao foi encontrado!\n");
+            return 1;
+            
+        }
+        else
+        {
+            builder_window2 = gtk_builder_new_from_file(caminho);
+        }
+    }
+    else
     {
-        fprintf(stderr, "Arquivo não encontrado!\n");
-        return 0;
+        builder_window2 = gtk_builder_new_from_file(caminho);
     }
     
-    builder_window2 = gtk_builder_new_from_file(caminho);
+    
     free(caminho);
     
     window2 = GTK_WIDGET(gtk_builder_get_object(builder_window2, "window2"));
@@ -67,7 +83,8 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
     input_item_window2=GTK_WIDGET(gtk_builder_get_object(builder_window2,"input_item"));
     input_senha_window2=GTK_WIDGET(gtk_builder_get_object(builder_window2,"input_usuario"));
     input_nome_window2=GTK_WIDGET(gtk_builder_get_object(builder_window2,"input_senha"));
-   
+   botao_deletar=GTK_WIDGET(gtk_builder_get_object(builder_window2,"delete"));
+
     
 
     char *dados=descriptografar("senha do maluco",id);
@@ -82,21 +99,14 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
     
     botao_alterar=GTK_WIDGET(gtk_builder_get_object(builder_window2,"alterar"));
     g_signal_connect(botao_alterar,"clicked",G_CALLBACK(alterar),NULL);
-    
-   
-    
-    
-    
-    
-   
-    
-    
+    g_signal_connect(botao_deletar,"clicked",G_CALLBACK(deletar),NULL);
+
     gtk_widget_show_all(window2);
     gtk_main();
     //free(id);
     free(dados);
-
-    return 1;
+    //free(user_data);
+    return 0;
 }
 void alterar()
 {
@@ -109,4 +119,12 @@ void alterar()
     sprintf(juntar_dados,"%s|||%s|||%s",nome_item,senha,nome);
     init_cripto("senha do maluco",juntar_dados,1,id);
     //free(id);
+}
+int deletar()
+{
+    delete_init(id);
+    gtk_widget_destroy(window2);
+    adicionar_widget();
+    
+    return 0;
 }

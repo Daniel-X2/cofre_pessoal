@@ -119,10 +119,11 @@ void fechar_banco() {
  * @brief Retorna a quantidade de usuários cadastrados na tabela.
  * @return Número de usuários cadastrados, ou -1 em caso de erro.
  */
-int retorna_quantidade()
+int *retorna_quantidade()
 {
     //init_sql();
-    const char* SQL = "SELECT COUNT(*) FROM usuarios;";
+    const char* SQL = "SELECT id FROM usuarios ORDER BY id;";
+   
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, nullptr);
 
@@ -130,23 +131,41 @@ int retorna_quantidade()
 
     if (rc != SQLITE_OK) {
         printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
-        return -1;
+        //return 1;
     }
 
     rc = sqlite3_step(stmt);
     if (rc == SQLITE_ROW) {
     
     }
-    int total = sqlite3_column_int(stmt, 0);  // pega o COUNT(*)
+     // pega o COUNT(*) 
+    int pegador_de_id = sqlite3_column_int(stmt, 0);
+    int id[2000];
+    int contador=0;
+    id[contador]=pegador_de_id;
+    contador++;
+    while((rc=sqlite3_step(stmt))== SQLITE_ROW)
+    {
+
+        pegador_de_id = sqlite3_column_int(stmt, 0);
+        id[contador]=pegador_de_id;
+        contador++;
+        //printf("ola, %i\n",contador);
+    }
+    
+    
+    
     sqlite3_finalize(stmt);
-    return total;
+    
+    int *pont_id=id;
+    return pont_id;
 
 
 }
 
 /**
  * @brief Atualiza os dados criptografados de um usuário existente.
- * @param salt Novo sal.
+ * @param salt Novo salt.
  * @param nonce Novo nonce.
  * @param texto_cryptado Novo texto criptografado.
  * @param id Identificador do usuário a ser atualizado.
@@ -175,4 +194,18 @@ int atualizar_dados(const std::string& salt, const std::string& nonce, const std
 
     sqlite3_finalize(stmt);
     return 0;
+}
+
+void deletar(int id)
+{
+    char SQL_contatedado[1024];
+    sprintf(SQL_contatedado,
+            "DELETE FROM usuarios WHERE id = %i ;",id);
+
+    rc = sqlite3_exec(db, SQL_contatedado, nullptr, nullptr, &errMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Erro ao deletar ao banco: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+    }
+    
 }

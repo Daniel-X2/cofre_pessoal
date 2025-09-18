@@ -9,7 +9,8 @@
 #include "../include/init.h"
 #include <string.h>
 #include "../include/janela.h"
-
+#include <stdlib.h>
+#include "../include/funcoes_main.h"
 /**
  * @var SENHA
  * @brief Senha mestra utilizada para criptografia e descriptografia dos dados.
@@ -17,6 +18,8 @@
 char *SENHA="senha do maluco";
 
 // Variáveis globais para widgets e objetos GTK
+
+
 GtkWidget * confirmar;        ///< Botão de confirmação
 GtkWidget * cancelar;         ///< Botão de cancelamento
 GtkBuilder * builder;         ///< Builder para carregar o layout Glade
@@ -29,54 +32,6 @@ GtkWidget * janela_note;      ///< Notebook (abas)
 GtkWidget * container;        ///< Container para os widgets de itens
 GtkWidget * botao_atualizar;  ///< Botão para atualizar lista
 GtkWidget * box;              ///< Box para empacotar widgets
-
-void adicionar_widget();
-
-/**
- * @brief Destroi todos os widgets filhos de um container.
- * @param widget Widget filho a ser destruído.
- * @param data Dados adicionais (não utilizado).
- */
-void destruir_filhos(GtkWidget *widget, gpointer data);
-
-/**
- * @brief Adiciona um botão na lista de itens, representando um item salvo.
- * @param nome_item Nome do item a ser exibido.
- * @param id Identificador do item.
- */
-void atualizar_lista(char *nome_item,int id);
-
-/**
- * @brief Conecta os sinais dos botões aos seus callbacks.
- */
-void conectar_botoes();
-
-/**
- * @brief Callback do botão de confirmação. Lê os campos, concatena e criptografa os dados.
- */
-void confirmar_entrada();
-
-/**
- * @brief Callback para alternar para a aba de notas.
- */
-void botao_notas();
-
-/**
- * @brief Callback do botão de cancelar. Limpa os campos de entrada.
- */
-void cancelar_entrada();
-
-/**
- * @brief Inicializa os ponteiros dos widgets a partir do arquivo Glade.
- */
-void get_object_gtk();
-
-/**
- * @brief Separa o nome do item de uma string formatada.
- * @param dados String formatada com delimitadores "|||".
- * @return Ponteiro para o nome do item.
- */
-char *separar( char *dados);
 
 /**
  * @brief Função principal. Inicializa GTK, carrega interface, conecta sinais e exibe a janela.
@@ -91,21 +46,39 @@ int main(int argc, char *argv[]) {
 
     
     char *caminho=encontrar_diretorio("./layout/interface.glade");
+    
     if (!caminho)
-    {
-        fprintf(stderr, "Arquivo não encontrado!\n");
-        return 0;
-    }
-    builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+        {
+            fprintf(stderr, "segunda tentativa!\n");
+            free(caminho);
+            char *caminho=encontrar_diretorio("../layout/interface.glade");
+            if(!caminho)
+            {
+
+                fprintf(stderr, "arquivo nao encontrado!\n");
+                fprintf(stderr, "tente mudar a localizaçao da pasta layout!\n");
+                return 1;
+            }
+            else
+                {
+                    builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+                }
+        }
+    else
+        {
+            builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+        }
+    //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
     free(caminho);
     box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
     get_object_gtk();
     
-   
+    //int *n1=verificar_quantidade();
+    
     conectar_botoes();
     gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
    
-    adicionar_widget();
+    ///adicionar_widget();
    
     
    
@@ -170,8 +143,8 @@ void conectar_botoes()
 {
     //faz retorna o nome do item pra ser colocado como titulo no widget
     char *nome_item= strtok(dados,"|||");
-    char *senha=strtok(NULL,"|||");
-    char *nome=strtok(NULL,"|||");
+    //char *senha=strtok(NULL,"|||");
+    //char *nome=strtok(NULL,"|||");
 
     return nome_item;
     
@@ -184,28 +157,7 @@ void destruir_filhos(GtkWidget *widget, gpointer data) {
 
 
 
-void adicionar_widget()
-{
-    /* o gtk_container_foreach ele sai destruindo todos os widgets do container
-    depois e pego a quantidade de linhas e feito um for pra descriptografar 
-    e adicionar no container com tudo atualizado e depois exibe tudo
-    */
-    
-   gtk_container_foreach(GTK_CONTAINER(container), destruir_filhos, NULL);
 
-    unsigned int quantidade_de_linhas=verificar_quantidade();
-    
-    for (int c =1;c<=quantidade_de_linhas;c++)
-    {
-        
-        char *n3=descriptografar(SENHA,c);
-        char n2[1000];
-        sprintf(n2,"%s",n3);
-        free(n3);
-        atualizar_lista(n2,c);
-    }
-    gtk_widget_show_all(box);
-}
 void cancelar_entrada()
 {
     //quando o usuario chama a funçao limpa a entrada
@@ -224,5 +176,39 @@ void confirmar_entrada()
 
     sprintf(juntar_dados,"%s|||%s|||%s",nome_item,nome,senha);
     init_cripto(SENHA,juntar_dados,0,0);
+    
+}
+
+void adicionar_widget()
+{
+    /* o gtk_container_foreach ele sai destruindo todos os widgets do container
+    depois e pego a quantidade de linhas e feito um for pra descriptografar 
+    e adicionar no container com tudo atualizado e depois exibe tudo
+    */
+   
+    
+    
+    gtk_container_foreach(GTK_CONTAINER(container), destruir_filhos, NULL);
+    
+    int n5=0;
+        
+        
+        
+    unsigned int *quantidade_de_linhas=verificar_quantidade();
+    
+    
+    while (n5<=10)
+    {
+        char *n3=descriptografar(SENHA,quantidade_de_linhas[n5]);
+        char n2[1000];
+        sprintf(n2,"%s",n3);
+        free(n3);
+        atualizar_lista(n2,quantidade_de_linhas[n5]);
+        n5++;
+        //adicionar_widget();
+        
+        
+    }
+    gtk_widget_show_all(box);
     
 }

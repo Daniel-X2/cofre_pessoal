@@ -3,4 +3,5 @@
 
 int window_dados();
 void alterar();
+int deletar();
 #endif

@@ -42,10 +42,12 @@ std::vector<unsigned char> from_base64(const std::string& b64) {
  */
 std::vector<unsigned char> generate_key(const std::string& password, const std::vector<unsigned char>& salt) {
     std::vector<unsigned char> key(crypto_secretbox_KEYBYTES);
+    
     if(crypto_pwhash(key.data(), key.size(), password.c_str(), password.size(), salt.data(),
                      crypto_pwhash_OPSLIMIT_INTERACTIVE, crypto_pwhash_MEMLIMIT_INTERACTIVE,
                      crypto_pwhash_ALG_DEFAULT) != 0)
         throw std::runtime_error("Falha no hash da senha");
+        
     return key;
 }
 

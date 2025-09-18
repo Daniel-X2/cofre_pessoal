@@ -90,10 +90,10 @@ char* descriptografar(const char* senha, int id) {
 }
 
 
-int verificar_quantidade()
+int *verificar_quantidade()
 {
     
-    int quantidade=retorna_quantidade();
+    int *quantidade=retorna_quantidade();
    
     return quantidade;
 }
@@ -106,4 +106,8 @@ void iniciar_banco()
 {
     // essa funçao serve como uma ponte entre arquivos c e c++
     init_sql();
+}
+void delete_init(int id)
+{
+    deletar(id);
 }

@@ -21,7 +21,7 @@ AppState *stt;
 
 // Variáveis globais para widgets e objetos GTK
 int n5=0;
-char*SENHA="";
+char*SENHA=NULL;
 GtkWidget * confirmar;        ///< Botão de confirmação
 GtkWidget * cancelar;         ///< Botão de cancelamento
 GtkBuilder * builder;         ///< Builder para carregar o layout Glade
@@ -39,16 +39,10 @@ GtkWidget * botao_lista;
  * @brief Função principal. Inicializa GTK, carrega interface, conecta sinais e exibe a janela.
  */
 int main(int argc, char *argv[]) {
-    
-    
-    
+
     gtk_init(&argc, &argv);
     iniciar_banco();
-    
 
-    
-
-    
     char *caminho=encontrar_diretorio("./layout/interface.glade");
     
     if (!caminho)
@@ -74,31 +68,42 @@ int main(int argc, char *argv[]) {
         }
     //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
     int total_linha=retornar_quantidade_init();
+    get_object_gtk();
     //printf("ola mundo %i\n",total_linha);
+    
     if(TRUE)
     {
         SENHA=login_main(0);
+        int* id=verificar_id();
+        if(SENHA==NULL )
+        {
+            gtk_widget_destroy(window);
+            
+        }
+        
+        else if(descriptografar(SENHA,id[0])!=NULL)
+        {
+            controle_de_fluxo();
+            free(caminho);
+            box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
+            //get_object_gtk();
+    
+            //int *n1=verificar_quantidade();
+    
+            conectar_botoes();
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
+    
+            ///adicionar_widget();
+
+            gtk_widget_show_all(window);
+            gtk_main();
+    
+   
+            return 1;
+        }
     }
-    //printf("quero ver %s",SENHA);
-    free(caminho);
-    box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
-    get_object_gtk();
     
-    //int *n1=verificar_quantidade();
     
-    conectar_botoes();
-    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
-    controle_de_fluxo();
-    ///adicionar_widget();
-   
-    
-   
-    
-    gtk_widget_show_all(window);
-    gtk_main();
-    
-   
-    return 1;
 }
 
 void acao_senha()

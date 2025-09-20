@@ -4,6 +4,9 @@
 #include "../include/init.h"
 #include "../include/funcoes_main.h"
 #include "../include/app_state.h"
+#include "string.h"
+#include <ctype.h>
+#include "../include/login.h"
 GtkWidget * window_login;
 GtkBuilder * builder_login;
 GtkWidget * confirmar_login;
@@ -25,7 +28,7 @@ void confirmar_acao_login2()
     {
         //char *SENHA;
         //snprintf(SENHA,500,"%s%s",dados_usuario,dados_senha);
-
+         senha2=NULL;
         //printf("ola munGGGGGGdo %sdd\n",SENHA);
         //main_senha(NULL,0);
 
@@ -46,6 +49,7 @@ void confirmar_acao_login2()
         {
             sprintf(senha1,"%s%s",dados_usuario,dados_senha);
             //AppState st;
+            remover_espaco(senha1);
             senha2 = strdup(senha1); // Alocar e copiar a string
             
             //main_senha(&st);
@@ -56,13 +60,22 @@ void confirmar_acao_login2()
             
             sprintf(senha1,"%s%s",dados_usuario,dados_senha);
             //AppState st;
+            remover_espaco(senha1);
             senha2 = strdup(senha1); // Alocar e copiar a string
             //st.senha=senha;
             //SENHA=senha;
             //main_senha(&st);
             int *id=verificar_id();
+            if(descriptografar(senha2,id[0])==NULL)
+            {
+                printf("ola nulo");
+            }
+            else
+            {
+                gtk_widget_destroy(window_login);
+            }
             //descriptografar(SENHA,id[0]);
-            gtk_widget_destroy(window_login);
+            
         }
         printf("agora quero ver %s",senha2);
     }
@@ -84,7 +97,7 @@ void confirmar_acao_login()
     {
         //char *SENHA;
         //snprintf(SENHA,500,"%s%s",dados_usuario,dados_senha);
-
+       
         //printf("ola munGGGGGGdo %sdd\n",SENHA);
         //main_senha(NULL,0);
 
@@ -94,12 +107,14 @@ void confirmar_acao_login()
         char senha1[strlen(dados_senha)+strlen(dados_usuario)+10];
        
         
-        //printf("ola mundo %sdd",SENHA);
+        printf("ola mundo dd");
         
         if(quantidade_linha==0)
         {
+            
             sprintf(senha1,"%s%s",dados_usuario,dados_senha);
             //AppState st;
+            
             senha2=senha1;
             
             //main_senha(&st);
@@ -109,8 +124,10 @@ void confirmar_acao_login()
         {
             
             sprintf(senha1,"%s%s",dados_usuario,dados_senha);
+            remover_espaco(senha1);
             //AppState st;
             senha2=senha1;
+            printf("ola mundo %s",senha1);
             //st.senha=senha;
             //SENHA=senha;
             //main_senha(&st);
@@ -118,7 +135,7 @@ void confirmar_acao_login()
             //descriptografar(SENHA,id[0]);
             gtk_widget_destroy(window_login);
         }
-        printf("agora quero ver %s",senha2);
+        //printf("agora quero ver %s",senha2);
     }
     
 }
@@ -164,3 +181,15 @@ char* login_main(int verificar)
     //return erro;
 }
 
+void remover_espaco(char * str)
+{
+    int i,j=0;
+    for(i=0;str[i]!='\0';i++)
+    {
+        if(str[i]!=' ')
+        {
+            str[j++]=str[i];
+        }
+    }
+    str[j]='\0';   
+}

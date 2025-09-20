@@ -74,13 +74,34 @@ int main(int argc, char *argv[]) {
     if(TRUE)
     {
         SENHA=login_main(0);
+        int linha=retornar_quantidade_init();
         int* id=verificar_id();
         if(SENHA==NULL )
-        {
+        { 
             gtk_widget_destroy(window);
             
         }
         
+        else if(linha==0 )//| 
+        {
+            controle_de_fluxo();
+            free(caminho);
+            box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
+            //get_object_gtk();
+    
+            //int *n1=verificar_quantidade();
+    
+            conectar_botoes();
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
+    
+            ///adicionar_widget();
+
+            gtk_widget_show_all(window);
+            gtk_main();
+    
+   
+            return 1;
+        }
         else if(descriptografar(SENHA,id[0])!=NULL)
         {
             controle_de_fluxo();

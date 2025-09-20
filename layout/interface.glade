@@ -25,6 +25,7 @@
     <property name="resizable">False</property>
     <property name="default-width">390</property>
     <property name="default-height">250</property>
+    <property name="hide-titlebar-when-maximized">True</property>
     <child>
       <!-- n-columns=7 n-rows=1 -->
       <object class="GtkGrid">
@@ -79,11 +80,11 @@
             </child>
             <child>
               <object class="GtkButton" id="botao_senha">
-                <property name="label" translatable="yes">Senhas</property>
+                <property name="label" translatable="yes">Senha</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="margin-top">2</property>
+                <property name="margin-top">8</property>
                 <property name="margin-bottom">14</property>
                 <property name="image">image2</property>
                 <property name="relief">none</property>
@@ -127,6 +128,7 @@
               <object class="GtkNotebook" id="gtknotebook">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="show-tabs">False</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
@@ -143,7 +145,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes">1</property>
+                            <property name="margin-top">23</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -157,6 +159,7 @@
                             <property name="can-focus">True</property>
                             <property name="halign">center</property>
                             <property name="valign">center</property>
+                            <property name="margin-bottom">11</property>
                             <property name="hexpand">False</property>
                             <property name="max-length">300</property>
                             <property name="primary-icon-stock">gtk-dialog-warning</property>
@@ -266,9 +269,6 @@
                     </child>
                   </object>
                 </child>
-                <child type="tab">
-                  <placeholder/>
-                </child>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
@@ -280,9 +280,6 @@
                   <packing>
                     <property name="position">1</property>
                   </packing>
-                </child>
-                <child type="tab">
-                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkScrolledWindow">

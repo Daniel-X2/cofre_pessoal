@@ -2,7 +2,7 @@
  * @file main.c
  * @brief Arquivo principal do cofre pessoal. Responsável por inicializar a interface gráfica, conectar sinais e manipular widgets usando GTK.
  */
-
+#include "../include/app_state.h"
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include "../include/diretorio.h"
@@ -11,15 +11,17 @@
 #include "../include/janela.h"
 #include <stdlib.h>
 #include "../include/funcoes_main.h"
+#include "../include/login.h"
+
 /**
  * @var SENHA
  * @brief Senha mestra utilizada para criptografia e descriptografia dos dados.
  */
-char *SENHA="senha do maluco";
+AppState *stt;
 
 // Variáveis globais para widgets e objetos GTK
-
-
+int n5=0;
+char*SENHA="";
 GtkWidget * confirmar;        ///< Botão de confirmação
 GtkWidget * cancelar;         ///< Botão de cancelamento
 GtkBuilder * builder;         ///< Builder para carregar o layout Glade
@@ -32,7 +34,7 @@ GtkWidget * janela_note;      ///< Notebook (abas)
 GtkWidget * container;        ///< Container para os widgets de itens
 GtkWidget * botao_atualizar;  ///< Botão para atualizar lista
 GtkWidget * box;              ///< Box para empacotar widgets
-
+GtkWidget * botao_lista;
 /**
  * @brief Função principal. Inicializa GTK, carrega interface, conecta sinais e exibe a janela.
  */
@@ -42,7 +44,9 @@ int main(int argc, char *argv[]) {
     
     gtk_init(&argc, &argv);
     iniciar_banco();
-  
+    
+
+    
 
     
     char *caminho=encontrar_diretorio("./layout/interface.glade");
@@ -69,6 +73,13 @@ int main(int argc, char *argv[]) {
             builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
         }
     //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+    int total_linha=retornar_quantidade_init();
+    //printf("ola mundo %i\n",total_linha);
+    if(TRUE)
+    {
+        SENHA=login_main(0);
+    }
+    //printf("quero ver %s",SENHA);
     free(caminho);
     box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
     get_object_gtk();
@@ -77,7 +88,7 @@ int main(int argc, char *argv[]) {
     
     conectar_botoes();
     gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
-   
+    controle_de_fluxo();
     ///adicionar_widget();
    
     
@@ -86,19 +97,20 @@ int main(int argc, char *argv[]) {
     gtk_widget_show_all(window);
     gtk_main();
     
-    
+   
     return 1;
 }
 
-void botao_notas()
+void acao_senha()
 {
-    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),1);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
 }
-
+ 
 void atualizar_lista(char *nome_item,int id)
 {
     
     char *nome =separar(nome_item);
+    
     const gchar *testes=nome;
     GtkWidget *btn = gtk_button_new_with_label(testes);
     char id_button[200];
@@ -113,38 +125,36 @@ void atualizar_lista(char *nome_item,int id)
 
 void get_object_gtk()
 {
-    
     window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-
     janela_note=GTK_WIDGET(gtk_builder_get_object(builder,"gtknotebook"));
-    
     confirmar=GTK_WIDGET(gtk_builder_get_object(builder,"confirmar"));
     cancelar=GTK_WIDGET(gtk_builder_get_object(builder,"cancelar"));
-    
     botao_atualizar=GTK_WIDGET(gtk_builder_get_object(builder,"botao_atualizar"));
-
     botao_senhas=GTK_WIDGET(gtk_builder_get_object(builder,"botao_senha"));
-    
     input_nome=GTK_WIDGET(gtk_builder_get_object(builder,"input_usuario"));
     input_nome_item=GTK_WIDGET(gtk_builder_get_object(builder,"input_item"));
     input_senha=GTK_WIDGET(gtk_builder_get_object(builder,"input_senha"));
+    botao_lista=GTK_WIDGET(gtk_builder_get_object(builder,"lista"));
     container=GTK_WIDGET(gtk_builder_get_object(builder,"container"));
 }   
+
 void conectar_botoes()
 {
+
     //faz as conexoes entre os botoes e funçoes
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(botao_atualizar,"clicked",G_CALLBACK(adicionar_widget),NULL);
+    g_signal_connect(botao_atualizar,"clicked",G_CALLBACK(controle_de_fluxo),NULL);
     g_signal_connect(confirmar,"clicked",G_CALLBACK(confirmar_entrada),NULL);
     g_signal_connect(cancelar,"clicked",G_CALLBACK(cancelar_entrada),NULL);
-
-}
+    g_signal_connect(botao_lista,"clicked",G_CALLBACK(acao_nota),NULL);
+    g_signal_connect(botao_senhas,"clicked",G_CALLBACK(acao_senha),NULL);
+}//acao_senha
  char* separar( char *dados)
 {
     //faz retorna o nome do item pra ser colocado como titulo no widget
     char *nome_item= strtok(dados,"|||");
-    //char *senha=strtok(NULL,"|||");
-    //char *nome=strtok(NULL,"|||");
+    char *senha=strtok(NULL,"|||");
+    char *nome=strtok(NULL,"|||");
 
     return nome_item;
     
@@ -153,10 +163,6 @@ void conectar_botoes()
 void destruir_filhos(GtkWidget *widget, gpointer data) {
     gtk_widget_destroy(widget);
 }
-
-
-
-
 
 void cancelar_entrada()
 {
@@ -175,40 +181,52 @@ void confirmar_entrada()
     char juntar_dados[strlen(nome)+strlen(nome_item)+strlen(senha)+10];
 
     sprintf(juntar_dados,"%s|||%s|||%s",nome_item,nome,senha);
+    //printf("ola mundoOOOOOOOOOO %s\n",SENHA);
     init_cripto(SENHA,juntar_dados,0,0);
     
 }
 
-void adicionar_widget()
+gboolean adicionar_widget(gpointer verificador)
 {
     /* o gtk_container_foreach ele sai destruindo todos os widgets do container
     depois e pego a quantidade de linhas e feito um for pra descriptografar 
     e adicionar no container com tudo atualizado e depois exibe tudo
     */
-   
-    
-    
-    gtk_container_foreach(GTK_CONTAINER(container), destruir_filhos, NULL);
-    
-    int n5=0;
+
         
-        
-        
-    unsigned int *quantidade_de_linhas=verificar_quantidade();
-    
-    
-    while (n5<=10)
+    unsigned int *lista_de_id=verificar_id();
+    int total_linha=retornar_quantidade_init();
+    if (total_linha==0 )
     {
-        char *n3=descriptografar(SENHA,quantidade_de_linhas[n5]);
-        char n2[1000];
-        sprintf(n2,"%s",n3);
-        free(n3);
-        atualizar_lista(n2,quantidade_de_linhas[n5]);
-        n5++;
-        //adicionar_widget();
-        
-        
+        return FALSE;
     }
-    gtk_widget_show_all(box);
+    else if(n5>=total_linha)
+    {
+        return FALSE;
+    }
+
+    char *n3=descriptografar(SENHA,lista_de_id[n5]);
+    printf("aqui no n3 %s\n",SENHA);
+    char n2[1000];
+    sprintf(n2,"%s",n3);
+    free(n3);
+    atualizar_lista(n2,lista_de_id[n5]);
+    n5++;
     
+    gtk_widget_show_all(box);
+    return TRUE;
+}
+void controle_de_fluxo()
+{
+    n5=0;
+    gtk_container_foreach(GTK_CONTAINER(container), destruir_filhos, NULL);
+    g_timeout_add(500,adicionar_widget,NULL);
+}
+void acao_nota()
+{
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),2);
+}
+char* senha_janela()
+{
+    return SENHA;
 }

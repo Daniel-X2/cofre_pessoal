@@ -6,7 +6,7 @@
 #include "../include/crypto.h"
 #include <sodium.h>
 #include <stdexcept>
-
+#include "../include/funcoes_main.h"
 /**
  * @brief Converte um vetor de bytes para uma string em Base64.
  * @param data Vetor de bytes a ser convertido.
@@ -77,6 +77,9 @@ std::vector<unsigned char> encrypt(const std::vector<unsigned char>& key, const 
 std::string decrypt(const std::vector<unsigned char>& key, const std::vector<unsigned char>& ciphertext, const std::vector<unsigned char>& nonce) {
     std::vector<unsigned char> decrypted(ciphertext.size() - crypto_secretbox_MACBYTES);
     if(crypto_secretbox_open_easy(decrypted.data(), ciphertext.data(), ciphertext.size(), nonce.data(), key.data()) != 0)
-        throw std::runtime_error("Falha ao descriptografar");
+        {
+            throw std::runtime_error("Falha ao descriptografar");
+            //main_senha(NULL,0);
+        }
     return std::string(decrypted.begin(), decrypted.end());
 }

@@ -86,8 +86,9 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
    botao_deletar=GTK_WIDGET(gtk_builder_get_object(builder_window2,"delete"));
 
     
-
-    char *dados=descriptografar("senha do maluco",id);
+    char *SENHA =senha_janela();
+    printf("deu erro aqui%s\n",SENHA);
+    char *dados=descriptografar(SENHA,id);
     const gchar *nome_item= strtok(dados,"|||");
     const gchar *senha=strtok(NULL,"|||");
    const  gchar *nome=strtok(NULL,"|||");
@@ -110,7 +111,7 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
 }
 void alterar()
 {
-    printf("cheguei\n");
+    //printf("cheguei\n");
     const char *nome=gtk_entry_get_text(GTK_ENTRY(input_nome_window2));
     const char *nome_item=gtk_entry_get_text(GTK_ENTRY(input_item_window2));
     const char *senha=gtk_entry_get_text(GTK_ENTRY(input_senha_window2));
@@ -124,7 +125,7 @@ int deletar()
 {
     delete_init(id);
     gtk_widget_destroy(window2);
-    adicionar_widget();
+    controle_de_fluxo();
     
     return 0;
 }

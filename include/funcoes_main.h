@@ -2,8 +2,9 @@
 #define FUNCOES_H
 
 #include <gtk/gtk.h>
-void adicionar_widget();
-
+#include "../include/app_state.h"
+gboolean adicionar_widget(gpointer verificador);
+char *teste(AppState *st);
 /**
  * @brief Destroi todos os widgets filhos de um container.
  * @param widget Widget filho a ser destruído.
@@ -31,7 +32,8 @@ void confirmar_entrada();
 /**
  * @brief Callback para alternar para a aba de notas.
  */
-void botao_notas();
+void acao_nota();
+void acao_senha();
 
 /**
  * @brief Callback do botão de cancelar. Limpa os campos de entrada.
@@ -42,13 +44,14 @@ void cancelar_entrada();
  * @brief Inicializa os ponteiros dos widgets a partir do arquivo Glade.
  */
 void get_object_gtk();
-
+char * main_senha(AppState *st);
 /**
  * @brief Separa o nome do item de uma string formatada.
  * @param dados String formatada com delimitadores "|||".
  * @return Ponteiro para o nome do item.
  */
+
 char *separar( char *dados);
-
-
+char* senha_janela();
+void controle_de_fluxo();
 #endif

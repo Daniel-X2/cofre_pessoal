@@ -89,11 +89,10 @@ char* descriptografar(const char* senha, int id) {
     return buffer; // ⚠️ quem chamar deve liberar com delete[]
 }
 
-
-int *verificar_quantidade()
+int *verificar_id()
 {
     
-    int *quantidade=retorna_quantidade();
+    int *quantidade=retorna_id();
    
     return quantidade;
 }
@@ -110,4 +109,9 @@ void iniciar_banco()
 void delete_init(int id)
 {
     deletar(id);
+}
+int retornar_quantidade_init()
+{
+    int quantidade=retornar_quantidade();
+    return quantidade;
 }

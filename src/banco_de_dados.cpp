@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sodium.h>
 #include <string.h>
-
+#include "../include/diretorio.h"
 // Variáveis globais para conexão e controle do banco de dados
 sqlite3* db;
 char* errMsg = nullptr;
@@ -119,7 +119,7 @@ void fechar_banco() {
  * @brief Retorna a quantidade de usuários cadastrados na tabela.
  * @return Número de usuários cadastrados, ou -1 em caso de erro.
  */
-int *retorna_quantidade()
+int *retorna_id()
 {
     //init_sql();
     const char* SQL = "SELECT id FROM usuarios ORDER BY id;";
@@ -162,7 +162,27 @@ int *retorna_quantidade()
 
 
 }
+int retornar_quantidade()
+{
+     const char* SQL = "SELECT COUNT (*) FROM usuarios;";
+   
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, nullptr);
 
+
+
+    if (rc != SQLITE_OK) {
+        printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
+        //return 1;
+    }
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+    
+    }
+     int quantidade = sqlite3_column_int(stmt, 0);
+    return quantidade;
+}
 /**
  * @brief Atualiza os dados criptografados de um usuário existente.
  * @param salt Novo salt.

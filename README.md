@@ -39,19 +39,19 @@ Para compilar e executar o projeto, você precisará ter as seguintes biblioteca
 
 ### Debian/Ubuntu
 ```bash
-sudo apt-get install libgtk-3-dev libsqlite3-dev libsodium-dev cmake
+sudo apt-get install libgtk-3-dev libsqlite3-dev libsodium-dev cmake make
 ````
 
 ### Fedora
 
 ```bash
-sudo dnf install gtk3-devel sqlite-devel libsodium-devel cmake
+sudo dnf install gtk3-devel sqlite-devel libsodium-devel cmake make
 ```
 
 ### Arch Linux
 
 ```bash
-sudo pacman -S gtk3 sqlite libsodium cmake
+sudo pacman -S gtk3 sqlite libsodium cmake make
 ```
 
 ---

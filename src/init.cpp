@@ -1,3 +1,4 @@
+
 /**
  * @file init.cpp
  * @brief Funções de inicialização, criptografia, descriptografia e integração entre C e C++ para o cofre pessoal.
@@ -91,11 +92,16 @@ char* descriptografar(const char* senha, int id) {
 
 int *verificar_id()
 {
-    
-    int *quantidade=retorna_id();
-   
-    return quantidade;
+    int total;
+    int* ids = retorna_id(&total);
+    if (ids == NULL || total == 0) {
+        printf("Nenhum usuário encontrado ou erro ao recuperar IDs.\n");
+        return NULL;  // Return NULL if no users or error
+    }
+    //printf("ola id,%i", ids[0]);
+    return ids;
 }
+
 void fechar_banco_init()
 {
     // essa funçao serve como uma ponte entre arquivos c e c++
@@ -114,4 +120,8 @@ int retornar_quantidade_init()
 {
     int quantidade=retornar_quantidade();
     return quantidade;
+}
+void destruir(void* ptr)
+{
+    delete[] static_cast<char*>(ptr);
 }

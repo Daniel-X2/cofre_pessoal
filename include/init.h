@@ -9,6 +9,7 @@ char* descriptografar(const char *senha,int id);
 void fechar_banco_init();
 void iniciar_banco();
 void delete_init(int id);
+void destruir(void* ptr);
 #ifdef __cplusplus
 }
 #endif

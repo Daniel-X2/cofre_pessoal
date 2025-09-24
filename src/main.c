@@ -2,7 +2,7 @@
  * @file main.c
  * @brief Arquivo principal do cofre pessoal. Responsável por inicializar a interface gráfica, conectar sinais e manipular widgets usando GTK.
  */
-#include "../include/app_state.h"
+
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include "../include/diretorio.h"
@@ -17,7 +17,7 @@
  * @var SENHA
  * @brief Senha mestra utilizada para criptografia e descriptografia dos dados.
  */
-AppState *stt;
+
 
 // Variáveis globais para widgets e objetos GTK
 int n5=0;
@@ -44,6 +44,10 @@ int main(int argc, char *argv[]) {
     iniciar_banco();
 
     char *caminho=encontrar_diretorio("./layout/interface.glade");
+    int total;
+    //int id=
+
+    //int linha=retornar_quantidade_init();
     
     if (!caminho)
         {
@@ -52,7 +56,7 @@ int main(int argc, char *argv[]) {
             char *caminho=encontrar_diretorio("../layout/interface.glade");
             if(!caminho)
             {
-
+                free(caminho);
                 fprintf(stderr, "arquivo nao encontrado!\n");
                 fprintf(stderr, "tente mudar a localizaçao da pasta layout!\n");
                 return 1;
@@ -60,34 +64,41 @@ int main(int argc, char *argv[]) {
             else
                 {
                     builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+                    free(caminho);
+                    fechar_banco_init();
                 }
         }
     else
         {
             builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+            free(caminho);
         }
     //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
     int total_linha=retornar_quantidade_init();
     get_object_gtk();
-    //printf("ola mundo %i\n",total_linha);
+    
     
     if(TRUE)
     {
         SENHA=login_main(0);
         int linha=retornar_quantidade_init();
-        int* id=verificar_id();
+        unsigned int* id=verificar_id();
+        //printf("ola mano %s \n",SENHA);
+        
+        
         if(SENHA==NULL )
         { 
             gtk_widget_destroy(window);
-            
+            //free(id);
         }
-        
-        else if(linha==0 )//| 
+        else if(total_linha==0 )//| 
         {
+            
+            //free(id);
             controle_de_fluxo();
             free(caminho);
             box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
-            //get_object_gtk();
+            get_object_gtk();
     
             //int *n1=verificar_quantidade();
     
@@ -98,32 +109,37 @@ int main(int argc, char *argv[]) {
 
             gtk_widget_show_all(window);
             gtk_main();
-    
-   
+            
+            
             return 1;
         }
         else if(descriptografar(SENHA,id[0])!=NULL)
         {
+            char * verificar_senha=descriptografar(SENHA,id[0]);
+            //free(id);
             controle_de_fluxo();
             free(caminho);
             box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
-            //get_object_gtk();
+            get_object_gtk();
     
             //int *n1=verificar_quantidade();
     
             conectar_botoes();
             gtk_notebook_set_current_page(GTK_NOTEBOOK(janela_note),0);
-    
+            
             ///adicionar_widget();
-
+            
             gtk_widget_show_all(window);
             gtk_main();
-    
-   
+            //free(id);
+
             return 1;
         }
+        //destruir(verificar_senha);
     }
-    
+    fechar_banco_init();
+    free(SENHA);
+   
     
 }
 
@@ -137,8 +153,9 @@ void atualizar_lista(char *nome_item,int id)
     
     char *nome =separar(nome_item);
     
-    const gchar *testes=nome;
-    GtkWidget *btn = gtk_button_new_with_label(testes);
+    const gchar *titulo=nome;
+    GtkWidget *btn = gtk_button_new_with_label(titulo);
+    
     char id_button[200];
     sprintf(id_button,"%i",id);
     int *pid = malloc(sizeof(int));
@@ -146,6 +163,8 @@ void atualizar_lista(char *nome_item,int id)
     g_signal_connect(btn,"clicked",G_CALLBACK(window_dados),pid);
     gtk_widget_set_name(btn,id_button);
     gtk_box_pack_start(GTK_BOX(box), btn, FALSE, FALSE, 1);
+    //free(pid);
+    
     
 }
 
@@ -197,19 +216,69 @@ void cancelar_entrada()
     gtk_entry_set_text(GTK_ENTRY(input_nome_item),"");
     gtk_entry_set_text(GTK_ENTRY(input_senha),"");
 }
-void confirmar_entrada()
+int confirmar_entrada()
 {
     //quando chama a funçao as variaveis pegam os valores do entry 
     //faz uma junçao e criptografa
     const char *nome=gtk_entry_get_text(GTK_ENTRY(input_nome));
     const char *nome_item=gtk_entry_get_text(GTK_ENTRY(input_nome_item));
     const char *senha=gtk_entry_get_text(GTK_ENTRY(input_senha));
+    unsigned int *lista_de_id=verificar_id();
+    if(strlen(senha)==0 | strlen(nome)==0 | strlen(nome_item)==0)
+    {
+        if(strlen(nome)==0)
+    {
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome em branco");
+    }
+    else{
+         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,NULL);
+    }
+    if (strlen(nome_item)==0)
+    {
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome do Item em branco");
+    }
+    else{
+         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,NULL);
+    }
+    
+    if(strlen(senha)==0)
+    {
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,"Aviso: Senha em branco");
+    }
+    
+    else{
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,NULL);
+    }
+   
+    return 1;
+}
+    else{
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,NULL);
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,NULL);
+        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,NULL);
+    }
+    
+    
+    
     char juntar_dados[strlen(nome)+strlen(nome_item)+strlen(senha)+10];
 
     sprintf(juntar_dados,"%s|||%s|||%s",nome_item,nome,senha);
-    //printf("ola mundoOOOOOOOOOO %s\n",SENHA);
-    init_cripto(SENHA,juntar_dados,0,0);
+   
     
+    init_cripto(SENHA,juntar_dados,0,1);
+    
+    
+   
+    free(lista_de_id);
+    cancelar_entrada();
+    //destruir(dados);
+    adicionar_na_lista();
+  
+
+     
 }
 
 gboolean adicionar_widget(gpointer verificador)
@@ -219,7 +288,6 @@ gboolean adicionar_widget(gpointer verificador)
     e adicionar no container com tudo atualizado e depois exibe tudo
     */
 
-        
     unsigned int *lista_de_id=verificar_id();
     int total_linha=retornar_quantidade_init();
     if (total_linha==0 )
@@ -230,15 +298,19 @@ gboolean adicionar_widget(gpointer verificador)
     {
         return FALSE;
     }
+   
+    char *dados=descriptografar(SENHA,lista_de_id[n5]);
+   
 
-    char *n3=descriptografar(SENHA,lista_de_id[n5]);
-    printf("aqui no n3 %s\n",SENHA);
-    char n2[1000];
-    sprintf(n2,"%s",n3);
-    free(n3);
-    atualizar_lista(n2,lista_de_id[n5]);
-    n5++;
+    char n2[strlen(dados)+10];
+    sprintf(n2,"%s",dados);
     
+    atualizar_lista(n2,lista_de_id[n5]);
+    printf("aqui no adicionar widget %i\n",lista_de_id[n5]);
+    n5++;
+    destruir(dados);
+    
+    free(lista_de_id);
     gtk_widget_show_all(box);
     return TRUE;
 }
@@ -256,3 +328,19 @@ char* senha_janela()
 {
     return SENHA;
 }
+void adicionar_na_lista()
+{
+    unsigned int *id=verificar_id();
+    //int total_linha=retornar_quantidade_init();
+    char *dados=descriptografar(SENHA,id[n5]);
+
+    char n2[strlen(dados)+10];
+    sprintf(n2,"%s",dados);
+    atualizar_lista(n2,id[n5]);
+    //printf("aqui no adicionar widget %i\n",id[n5]);
+    n5++;
+    //destruir(dados);
+
+    gtk_widget_show_all(box);
+    
+}   

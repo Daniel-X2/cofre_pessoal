@@ -59,3 +59,5 @@ teste_criptografia/.vscode/settings.json
 teste_criptografia/.vscode/tasks.json
 build/.ninja_deps
 /build
+meu_banco.db
+

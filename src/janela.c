@@ -61,21 +61,25 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
         if (!caminho)
         {
             fprintf(stderr, "diretorio nao foi encontrado!\n");
+            free(caminho);
+            free(id);
             return 1;
             
         }
         else
         {
             builder_window2 = gtk_builder_new_from_file(caminho);
+            free(caminho);
         }
     }
     else
     {
         builder_window2 = gtk_builder_new_from_file(caminho);
+        free(caminho);
     }
     
     
-    free(caminho);
+    //free(caminho);
     
     window2 = GTK_WIDGET(gtk_builder_get_object(builder_window2, "window2"));
     g_signal_connect(window2, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -105,8 +109,9 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
     gtk_widget_show_all(window2);
     gtk_main();
     //free(id);
-    free(dados);
-    //free(user_data);
+    destruir(dados);
+
+    
     return 0;
 }
 void alterar()
@@ -115,10 +120,43 @@ void alterar()
     const char *nome=gtk_entry_get_text(GTK_ENTRY(input_nome_window2));
     const char *nome_item=gtk_entry_get_text(GTK_ENTRY(input_item_window2));
     const char *senha=gtk_entry_get_text(GTK_ENTRY(input_senha_window2));
-    char juntar_dados[strlen(nome)+strlen(nome_item)+strlen(senha)+10];
-
-    sprintf(juntar_dados,"%s|||%s|||%s",nome_item,senha,nome);
-    init_cripto("senha do maluco",juntar_dados,1,id);
+    if(strlen(nome)==0 |strlen(nome_item)==0| strlen(senha)==0)
+    {
+        if(strlen(nome)==0)
+        {
+            gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_window2),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+             gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome_window2),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome  em branco");
+        }
+        else
+        {
+             gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_window2),GTK_ENTRY_ICON_PRIMARY,NULL);
+        }
+        if(strlen(nome_item)==0)
+        {
+                        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_item_window2),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+             gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_item_window2),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome do item em branco");
+        }
+        else
+        {
+                         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_item_window2),GTK_ENTRY_ICON_PRIMARY,NULL);
+        }
+        if(strlen(senha)==0)
+        {
+                        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha_window2),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+             gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome_window2),GTK_ENTRY_ICON_PRIMARY,"Aviso: Senha em branco");
+        }
+        else{
+                         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha_window2),GTK_ENTRY_ICON_PRIMARY,NULL);
+        }
+        
+    }
+    else{
+         char juntar_dados[strlen(nome)+strlen(nome_item)+strlen(senha)+10];
+        char *SENHA=senha_janela();
+        sprintf(juntar_dados,"%s|||%s|||%s",nome_item,senha,nome);
+        init_cripto(SENHA,juntar_dados,1,id);
+    }
+   
     //free(id);
 }
 int deletar()

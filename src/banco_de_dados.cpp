@@ -7,6 +7,9 @@
 #include <iostream>
 #include <sodium.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sqlite3.h> 
 #include "../include/diretorio.h"
 // Variáveis globais para conexão e controle do banco de dados
 sqlite3* db;
@@ -119,49 +122,7 @@ void fechar_banco() {
  * @brief Retorna a quantidade de usuários cadastrados na tabela.
  * @return Número de usuários cadastrados, ou -1 em caso de erro.
  */
-int *retorna_id()
-{
-    //init_sql();
-    const char* SQL = "SELECT id FROM usuarios ORDER BY id;";
-   
-    sqlite3_stmt* stmt;
-    int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, nullptr);
 
-
-
-    if (rc != SQLITE_OK) {
-        printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
-        //return 1;
-    }
-
-    rc = sqlite3_step(stmt);
-    if (rc == SQLITE_ROW) {
-    
-    }
-     // pega o COUNT(*) 
-    int pegador_de_id = sqlite3_column_int(stmt, 0);
-    int id[2000];
-    int contador=0;
-    id[contador]=pegador_de_id;
-    contador++;
-    while((rc=sqlite3_step(stmt))== SQLITE_ROW)
-    {
-
-        pegador_de_id = sqlite3_column_int(stmt, 0);
-        id[contador]=pegador_de_id;
-        contador++;
-        //printf("ola, %i\n",contador);
-    }
-    
-    
-    
-    sqlite3_finalize(stmt);
-    
-    int *pont_id=id;
-    return pont_id;
-
-
-}
 int retornar_quantidade()
 {
      const char* SQL = "SELECT COUNT (*) FROM usuarios;";
@@ -193,6 +154,7 @@ int retornar_quantidade()
  */
 int atualizar_dados(const std::string& salt, const std::string& nonce, const std::string& texto_cryptado, int id)
 {
+    
     const char* sql = "UPDATE usuarios SET salt = ?, nonce = ?, texto_cryptado = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -228,4 +190,69 @@ void deletar(int id)
         sqlite3_free(errMsg);
     }
     
+}
+
+
+
+
+
+
+int* retorna_id(int* total_ids) {
+    if (!db) {  // Add database check
+        printf("Erro: Conexão com banco de dados inválida\n");
+        return NULL;
+    }
+
+    const char* SQL = "SELECT id FROM usuarios ORDER BY id;";
+    sqlite3_stmt* stmt;
+    int rc = sqlite3_prepare_v2(db, SQL, -1, &stmt, NULL);
+
+    if (rc != SQLITE_OK) {
+        printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
+        return NULL;
+    }
+
+    int capacity = 100; // capacidade inicial
+    int* ids =(int*) malloc(sizeof(int) * capacity);
+    if (!ids) {
+        printf("Erro de alocação de memória\n");
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+
+    int count = 0;
+
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+        if (count >= capacity) {
+            capacity *= 2;
+            int* new_ids = (int*)realloc(ids, sizeof(int) * capacity);
+            if (!new_ids) {
+                printf("Erro ao realocar memória\n");
+                free(ids);
+                sqlite3_finalize(stmt);
+                return NULL;
+            }
+            ids = new_ids;
+        }
+
+        ids[count++] = sqlite3_column_int(stmt, 0);
+    }
+
+    // Add error handling for sqlite3_step
+    if (rc != SQLITE_DONE) {
+        printf("Erro ao executar query: %s\n", sqlite3_errmsg(db));
+        free(ids);
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+
+    sqlite3_finalize(stmt);
+    
+    if (total_ids)
+        *total_ids = count;
+
+    // Optional: Return NULL if no results
+    
+
+    return ids;
 }

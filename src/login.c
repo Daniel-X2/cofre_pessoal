@@ -3,38 +3,76 @@
 #include <gtk/gtk.h>
 #include "../include/init.h"
 #include "../include/funcoes_main.h"
-#include "../include/app_state.h"
+
 #include "string.h"
 #include <ctype.h>
 #include "../include/login.h"
 GtkWidget * window_login;
 GtkBuilder * builder_login;
 GtkWidget * confirmar_login;
+GtkWidget * usuario;
+GtkWidget * senha;
+const gchar* dados_usuario;
+const gchar* dados_senha;
 
 char *senha2;
-void confirmar_acao_login2()
+GtkWidget * confirm;
+int janela_confirmar()
 {
-    int quantidade_linha=retornar_quantidade_init();
-    GtkWidget * usuario;
-    GtkWidget * senha;
-   
-    usuario=GTK_WIDGET(gtk_builder_get_object(builder_login,"usuario"));
-    senha=GTK_WIDGET(gtk_builder_get_object(builder_login,"senha"));
-    const gchar* dados_senha=gtk_entry_get_text(GTK_ENTRY(senha));
-    const gchar* dados_usuario= gtk_entry_get_text(GTK_ENTRY(usuario));
+    gtk_widget_destroy(confirm);
+    gtk_window_close(GTK_WINDOW(confirm));
     
 
     if(strlen(dados_senha)==0 | strlen(dados_usuario)==0)
     {
-        //char *SENHA;
-        //snprintf(SENHA,500,"%s%s",dados_usuario,dados_senha);
-         senha2=NULL;
-        //printf("ola munGGGGGGdo %sdd\n",SENHA);
-        //main_senha(NULL,0);
-
+       
+        senha2=NULL;
+        
     }
     else
     {
+        //gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,NULL);
+        //gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,NULL);
+        // Liberar memória anterior se existir
+        if (senha2 != NULL) {
+            free(senha2);
+        }
+        
+        char senha1[strlen(dados_senha)+strlen(dados_usuario)+10];
+       
+        
+
+    sprintf(senha1,"%s%s",dados_usuario,dados_senha);
+            //AppState st;
+            remover_espaco(senha1);
+            senha2 = strdup(senha1); // Alocar e copiar a string
+            
+            //main_senha(&st);
+            gtk_widget_destroy(window_login);
+                return 0;
+            }
+            //printf("ola mundo da senha %s\n",senha2);        
+}
+void confirmar_acao_login2()
+{
+    
+   
+
+    dados_senha=gtk_entry_get_text(GTK_ENTRY(senha));
+    dados_usuario= gtk_entry_get_text(GTK_ENTRY(usuario));
+    
+    
+    
+        if(strlen(dados_senha)==0 | strlen(dados_usuario)==0)
+    {
+       
+        senha2=NULL;
+        
+    }
+    else
+    {
+        //gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,NULL);
+        //gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,NULL);
         // Liberar memória anterior se existir
         if (senha2 != NULL) {
             free(senha2);
@@ -44,16 +82,19 @@ void confirmar_acao_login2()
        
         
         //printf("ola mundo %sdd",SENHA);
-        
+        int quantidade_linha=retornar_quantidade_init();
         if(quantidade_linha==0)
         {
-            sprintf(senha1,"%s%s",dados_usuario,dados_senha);
-            //AppState st;
-            remover_espaco(senha1);
-            senha2 = strdup(senha1); // Alocar e copiar a string
+            confirm=GTK_WIDGET(gtk_builder_get_object(builder_login,"janela_confirmacao"));
+            GtkWidget * botao_confirmar=GTK_WIDGET(gtk_builder_get_object(builder_login,"botao_confirmar"));
+            g_signal_connect(botao_confirmar,"clicked",G_CALLBACK(janela_confirmar),NULL);
+            gtk_widget_show_all(confirm);
+            //gtk_main();
+
+            //free(quantidade_linha);
+             
+           
             
-            //main_senha(&st);
-            gtk_widget_destroy(window_login);
         }
         else
         {
@@ -62,83 +103,32 @@ void confirmar_acao_login2()
             //AppState st;
             remover_espaco(senha1);
             senha2 = strdup(senha1); // Alocar e copiar a string
-            //st.senha=senha;
-            //SENHA=senha;
-            //main_senha(&st);
-            int *id=verificar_id();
-            if(descriptografar(senha2,id[0])==NULL)
+        
+            unsigned int *id=verificar_id();
+            char * verificar=descriptografar(senha2,id[0]);
+            //free(quantidade_linha);
+            
+            if(verificar==NULL)
             {
-                printf("ola nulo");
+                
+                gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-error");
+                gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-error");
+
+                
             }
             else
             {
                 gtk_widget_destroy(window_login);
             }
-            //descriptografar(SENHA,id[0]);
-            
+            free(id);
+            destruir(verificar);
         }
-        printf("agora quero ver %s",senha2);
     }
     
 }
-void confirmar_acao_login()
-{
-    int quantidade_linha=retornar_quantidade_init();
-    GtkWidget * usuario;
-    GtkWidget * senha;
-   
-    usuario=GTK_WIDGET(gtk_builder_get_object(builder_login,"usuario"));
-    senha=GTK_WIDGET(gtk_builder_get_object(builder_login,"senha"));
-    const gchar* dados_senha=gtk_entry_get_text(GTK_ENTRY(senha));
-    const gchar* dados_usuario= gtk_entry_get_text(GTK_ENTRY(usuario));
-    
 
-    if(strlen(dados_senha)==0 | strlen(dados_usuario)==0)
-    {
-        //char *SENHA;
-        //snprintf(SENHA,500,"%s%s",dados_usuario,dados_senha);
-       
-        //printf("ola munGGGGGGdo %sdd\n",SENHA);
-        //main_senha(NULL,0);
-
-    }
-    else
-    {
-        char senha1[strlen(dados_senha)+strlen(dados_usuario)+10];
-       
-        
-        printf("ola mundo dd");
-        
-        if(quantidade_linha==0)
-        {
-            
-            sprintf(senha1,"%s%s",dados_usuario,dados_senha);
-            //AppState st;
-            
-            senha2=senha1;
-            
-            //main_senha(&st);
-            gtk_widget_destroy(window_login);
-        }
-        else
-        {
-            
-            sprintf(senha1,"%s%s",dados_usuario,dados_senha);
-            remover_espaco(senha1);
-            //AppState st;
-            senha2=senha1;
-            printf("ola mundo %s",senha1);
-            //st.senha=senha;
-            //SENHA=senha;
-            //main_senha(&st);
-            int *id=verificar_id();
-            //descriptografar(SENHA,id[0]);
-            gtk_widget_destroy(window_login);
-        }
-        //printf("agora quero ver %s",senha2);
-    }
     
-}
+    
 char* login_main(int verificar)
 {
     
@@ -154,29 +144,34 @@ char* login_main(int verificar)
 
                 fprintf(stderr, "arquivo nao encontrado!\n");
                 fprintf(stderr, "tente mudar a localizaçao da pasta layout!\n");
-                //erro=1;
-                //return erro;
+               free(caminho);
             }
             else
                 {
                     builder_login = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+                    free(caminho);
                 }
         }
     else
         {
-            builder_login = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+            builder_login = gtk_builder_new_from_file(caminho);
+            free(caminho);
+            //depois mudar o arquivo .glade pra xml
         }
-   free(caminho);
    
-    
+   usuario=GTK_WIDGET(gtk_builder_get_object(builder_login,"usuario"));
+    senha=GTK_WIDGET(gtk_builder_get_object(builder_login,"senha"));
+    g_timeout_add(500,interatividade,NULL);
+   
     window_login = GTK_WIDGET(gtk_builder_get_object(builder_login, "login"));
     g_signal_connect(window_login, "destroy", G_CALLBACK(gtk_main_quit), NULL);
- confirmar_login=GTK_WIDGET(gtk_builder_get_object(builder_login,"confirmar_login"));
- g_signal_connect(confirmar_login,"clicked",G_CALLBACK(confirmar_acao_login2),NULL);
+    confirmar_login=GTK_WIDGET(gtk_builder_get_object(builder_login,"confirmar_login"));
+    g_signal_connect(confirmar_login,"clicked",G_CALLBACK(confirmar_acao_login2),NULL);
         
     gtk_widget_show_all(window_login);
+     
     gtk_main();
-    printf("estou aqui em login %s",senha2); 
+    
    return senha2;
     //return erro;
 }
@@ -192,4 +187,36 @@ void remover_espaco(char * str)
         }
     }
     str[j]='\0';   
+}
+gboolean interatividade(gpointer nulo)
+{
+    dados_senha=gtk_entry_get_text(GTK_ENTRY(senha));
+    dados_usuario= gtk_entry_get_text(GTK_ENTRY(usuario));
+       
+       
+        if(strlen(dados_senha)==0)
+        {
+            gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+            gtk_entry_set_icon_tooltip_text(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,"Aviso: Senha em branco");
+            
+        }
+        else
+        {
+        
+            gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,NULL);
+        }
+        if(strlen(dados_usuario)==0)
+        {
+             gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
+             gtk_entry_set_icon_tooltip_text(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,"Aviso: Usuario em branco");
+            }      
+        
+        else
+        {
+            gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,NULL);
+        }
+    
+    
+    
+    return TRUE;
 }

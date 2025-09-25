@@ -1,7 +1,5 @@
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+
 #include "../include/diretorio.h"
 
 #ifdef _WIN32
@@ -13,12 +11,12 @@
 char* encontrar_diretorio(char diretorio[]) {
 #ifdef _WIN32
     // Windows: usa _fullpath
-    char* abs_path = (char*)malloc(_MAX_PATH);
-    if (_fullpath(abs_path, diretorio, _MAX_PATH) != NULL) {
-        return abs_path;
+    char* abs_pasta = (char*)malloc(_MAX_PATH);
+    if (_fullpath(abs_pasta, diretorio, _MAX_PATH) != NULL) {
+        return abs_pasta;
     } else {
         perror("Erro ao resolver caminho");
-        free(abs_path);
+        free(abs_pasta);
         return NULL;
     }
 #else

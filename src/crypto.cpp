@@ -4,9 +4,7 @@
  */
 
 #include "../include/crypto.h"
-#include <sodium.h>
-#include <stdexcept>
-#include "../include/funcoes_main.h"
+
 /**
  * @brief Converte um vetor de bytes para uma string em Base64.
  * @param data Vetor de bytes a ser convertido.

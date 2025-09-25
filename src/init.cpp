@@ -3,16 +3,8 @@
  * @file init.cpp
  * @brief Funções de inicialização, criptografia, descriptografia e integração entre C e C++ para o cofre pessoal.
  */
-
-#include <sodium.h>
-#include "../include/banco_de_dados.h"
-#include "../include/crypto.h"
 #include "../include/init.h"
-#include <strings.h>
-#include <iostream>
-#include <sodium.h>
-#include <string.h>
-#include <vector>
+
 
 /**
  * @brief Inicializa a criptografia, gera salt, chave, nonce e cifra a mensagem, salvando no banco de dados.
@@ -62,7 +54,7 @@ int init_cripto(const char *senha, const char *messagem, int verificar_update, i
 
 
 // Sua função de descriptografia
-char* descriptografar(const char* senha, int id) {
+char * descriptografar(const char* senha, int id,int verificar) {
     
     // Pega usuário do banco
     Usuario u = buscar_usuario(id);
@@ -84,21 +76,29 @@ char* descriptografar(const char* senha, int id) {
     }
 
     // Aloca buffer para C
-    char* buffer = new char[decrypted.size() + 1]; // +1 para o '\0'
+    char* buffer = new char[decrypted.size() + 1]; 
     strcpy(buffer, decrypted.c_str());
-    //printf("ola mund %s\n",buffer);
-    return buffer; // ⚠️ quem chamar deve liberar com delete[]
+    
+    if(verificar==0)
+    {
+        return buffer; // ⚠️ quem chamar deve liberar com delete[]
+    }
+    else
+    {
+        char*funcionou="0";
+        return funcionou;
+    }
 }
 
 int *verificar_id()
 {
     int total;
     int* ids = retorna_id(&total);
-    if (ids == NULL || total == 0) {
+    if (ids == NULL ) {
         printf("Nenhum usuário encontrado ou erro ao recuperar IDs.\n");
-        return NULL;  // Return NULL if no users or error
+        return NULL;  
     }
-    //printf("ola id,%i", ids[0]);
+    
     return ids;
 }
 

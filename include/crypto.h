@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <sodium.h>
+#include <stdexcept>
+#include "../include/funcoes_main.h"
 
 std::string to_base64(const std::vector<unsigned char>& data);
 std::vector<unsigned char> from_base64(const std::string& b64);

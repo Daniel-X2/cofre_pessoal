@@ -2,15 +2,9 @@
  * @file banco_de_dados.cpp
  * @brief Implementação das funções de manipulação do banco de dados SQLite para o cofre pessoal.
  */
-
 #include "../include/banco_de_dados.h"
-#include <iostream>
-#include <sodium.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sqlite3.h> 
-#include "../include/diretorio.h"
+
+
 // Variáveis globais para conexão e controle do banco de dados
 sqlite3* db;
 char* errMsg = nullptr;
@@ -21,7 +15,9 @@ int rc;
  * @return 0 em caso de sucesso, 1 em caso de erro.
  */
 int init_sql() {
-    
+    if (db != NULL) {  // ⬅️ Evitar abrir banco duas vezes
+        return 0;      // Já está aberto
+    }
     rc = sqlite3_open("meu_banco.db", &db);
     
     if (rc!= SQLITE_OK) {
@@ -33,8 +29,8 @@ int init_sql() {
 
     const char* sql = "CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY, nonce TEXT, salt TEXT, texto_cryptado TEXT);";
     
-    int n1 = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg);
-    if (n1 != SQLITE_OK) {
+    int exec_sqlite = sqlite3_exec(db, sql, nullptr, nullptr, &errMsg);
+    if (exec_sqlite != SQLITE_OK) {
         std::cerr << "Erro SQL: " << errMsg << std::endl;
         sqlite3_free(errMsg);
         return 1;
@@ -114,7 +110,7 @@ Usuario buscar_usuario(int id) {
  * @brief Fecha a conexão com o banco de dados SQLite.
  */
 void fechar_banco() {
-    //printf("ola aaqui no sql de fechar\n");
+    
     sqlite3_close(db);
 }
 
@@ -134,7 +130,7 @@ int retornar_quantidade()
 
     if (rc != SQLITE_OK) {
         printf("Erro ao preparar statement: %s\n", sqlite3_errmsg(db));
-        //return 1;
+        return 1;
     }
 
     rc = sqlite3_step(stmt);
@@ -248,11 +244,5 @@ int* retorna_id(int* total_ids) {
 
     sqlite3_finalize(stmt);
     
-    if (total_ids)
-        *total_ids = count;
-
-    // Optional: Return NULL if no results
-    
-
     return ids;
 }

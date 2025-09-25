@@ -1,8 +1,14 @@
 #ifndef FUNCOES_H
 #define FUNCOES_H
-
 #include <gtk/gtk.h>
+#include <stdio.h>
+#include "../include/diretorio.h"
+#include "../include/init.h"
+#include <string.h>
+#include "../include/janela.h"
+#include <stdlib.h>
 
+#include "../include/login.h"
 gboolean adicionar_widget(gpointer verificador);
 
 /**

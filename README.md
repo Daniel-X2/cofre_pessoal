@@ -63,6 +63,7 @@ O projeto usa o **CMake** para gerenciar a compilação.
 1. Crie um diretório de build e entre nele:
 
    ```bash
+   cd cofre_pessoal
    mkdir build
    cd build
    ```
@@ -85,7 +86,7 @@ O projeto usa o **CMake** para gerenciar a compilação.
 
 Após a compilação, o executável estará no diretório `build`.
 
-Exemplo (supondo que no `CMakeLists.txt` o executável se chame `meu_app`):
+
 
 ```bash
 ./build/meu_app

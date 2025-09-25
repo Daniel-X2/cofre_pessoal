@@ -59,20 +59,16 @@ int main(int argc, char *argv[]) {
         
         int linha=retornar_quantidade_init();
         unsigned int* id=verificar_id();
-       
-        
-        
-       
-        
+
         if(SENHA==NULL )
         { 
             gtk_widget_destroy(window);
-            //free(id);
+            free(id);
         }
         else if(total_linha==0 )//| 
         {
             
-            //free(id);
+            free(id);
             controle_de_fluxo();
             // free(caminho); // Removido para evitar double free
             GtkWidget *box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
@@ -94,7 +90,7 @@ int main(int argc, char *argv[]) {
         }
         else if(descriptografar(SENHA,id[contador],1)!=NULL)
         {
-            
+            free(id);
             controle_de_fluxo();
             // free(caminho); // Removido para evitar double free
             GtkWidget *box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
@@ -113,6 +109,10 @@ int main(int argc, char *argv[]) {
             //free(id);
 
             return 0;
+        }
+        else
+        {
+            free(id);
         }
         //destruir(verificar_senha);
     }
@@ -139,10 +139,11 @@ void atualizar_lista(char *nome_item,int id)
     
     char id_button[200];
     sprintf(id_button,"%i",id);
-    int *pid = malloc(sizeof(int));
-    if (!pid) return;
-    *pid = id;
-    g_signal_connect(btn,"clicked",G_CALLBACK(window_dados),pid);
+    //int *pid = malloc(sizeof(int));
+    //if (!pid) return;
+    //*pid = id;
+    g_object_set_data(G_OBJECT(btn),"id",id);
+    g_signal_connect(btn,"clicked",G_CALLBACK(window_dados),NULL);
     gtk_widget_set_name(btn,id_button);
     GtkWidget *box = GTK_WIDGET(gtk_builder_get_object(builder, "container"));
     gtk_box_pack_start(GTK_BOX(box), btn, FALSE, FALSE, 1);
@@ -272,14 +273,16 @@ gboolean adicionar_widget(gpointer verificador)
     e adicionar no container com tudo atualizado e depois exibe tudo
     */
 
-    unsigned int *lista_de_id=verificar_id();
+    int *lista_de_id=verificar_id();
     int total_linha=retornar_quantidade_init();
     if (total_linha==0 )
     {
+        if(lista_de_id) free(lista_de_id);
         return FALSE;
     }
     else if(contador>=total_linha)
     {
+        free(lista_de_id);
         return FALSE;
     }
    

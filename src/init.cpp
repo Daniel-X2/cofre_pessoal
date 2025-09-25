@@ -75,18 +75,16 @@ char * descriptografar(const char* senha, int id,int verificar) {
         return nullptr;
     }
 
-    // Aloca buffer para C
-    char* buffer = new char[decrypted.size() + 1]; 
-    strcpy(buffer, decrypted.c_str());
-    
     if(verificar==0)
     {
+        // Aloca buffer para C
+        char* buffer = new char[decrypted.size() + 1];
+        strcpy(buffer, decrypted.c_str());
         return buffer; // ⚠️ quem chamar deve liberar com delete[]
     }
     else
     {
-        char*funcionou="0";
-        return funcionou;
+        return (char*)"0";
     }
 }
 

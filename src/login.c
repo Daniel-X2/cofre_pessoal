@@ -95,6 +95,7 @@ void confirmar_acao_login2()
 
                 gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario), GTK_ENTRY_ICON_PRIMARY, "gtk-dialog-error");
                 gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha), GTK_ENTRY_ICON_PRIMARY, "gtk-dialog-error");
+                free(id);
             }
             else
             {

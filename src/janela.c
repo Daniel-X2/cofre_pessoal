@@ -1,11 +1,13 @@
 
 #include "../include/janela.h"
-
+#include <stdlib.h>
     GtkWidget * window2;
     GtkBuilder * builder_janela;
     int id;
 int window_dados(GtkWidget *widget, gpointer user_data) {
-    id = *((int*)user_data);
+   
+    const gchar* name=gtk_widget_get_name(widget);
+   id = atoi(name);
 
     char *caminho=encontrar_diretorio("./layout/atualizar_dados.glade");
     if (!caminho)
@@ -58,16 +60,22 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
     gtk_entry_set_text(GTK_ENTRY(input_nome),nome);
     gtk_entry_set_text(GTK_ENTRY(input_senha),senha);
 
-     GtkWidget * botao_alterar=GTK_WIDGET(gtk_builder_get_object(builder_janela,"alterar"));
+    GtkWidget * botao_alterar=GTK_WIDGET(gtk_builder_get_object(builder_janela,"alterar"));
     g_signal_connect(botao_alterar,"clicked",G_CALLBACK(alterar),NULL);
     g_signal_connect(botao_deletar,"clicked",G_CALLBACK(deletar),NULL);
 
     gtk_widget_show_all(window2);
     gtk_main();
-    //free(id);
-    destruir(dados);
-
     
+    //GtkWidget * teste1=GTK_WIDGET(gtk_builder_get_object(builder_janela,teste));
+
+    //gpointer data = g_object_get_data(G_OBJECT(teste1),"id");
+    //id=(int)data;
+    
+    destruir(dados);
+    //free(user_data);///verificar depois
+     g_object_unref(builder_janela);
+    builder_janela = NULL;
     return 0;
 }
 void alterar()
@@ -121,6 +129,8 @@ void alterar()
 }
 int deletar()
 {
+    
+    
     delete_init(id);
     gtk_widget_destroy(window2);
     controle_de_fluxo();

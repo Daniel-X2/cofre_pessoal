@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
     int total_linha=retornar_quantidade_init();
     get_object_gtk();
-    
+    css();
     
     if(TRUE)
     {
@@ -212,41 +212,10 @@ int confirmar_entrada()
     const char *nome_item=gtk_entry_get_text(GTK_ENTRY(input_nome_item));
     const char *senha=gtk_entry_get_text(GTK_ENTRY(input_senha));
     unsigned int *lista_de_id=verificar_id();
-    if(strlen(senha)==0 || strlen(nome)==0 || strlen(nome_item)==0)
-    {
-        if(strlen(nome)==0)
-    {
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
-        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome em branco");
-    }
-    else{
-         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,NULL);
-    }
-    if (strlen(nome_item)==0)
-    {
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
-        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,"Aviso: Nome do Item em branco");
-    }
-    else{
-         gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,NULL);
-    }
     
-    if(strlen(senha)==0)
+    if(strlen(nome)==0||strlen(nome_item)==0||strlen(senha)==0)
     {
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,"gtk-dialog-warning");
-        gtk_entry_set_icon_tooltip_text(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,"Aviso: Senha em branco");
-    }
-    
-    else{
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,NULL);
-    }
-   
-    return 1;
-}
-    else{
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_senha),GTK_ENTRY_ICON_PRIMARY,NULL);
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome_item),GTK_ENTRY_ICON_PRIMARY,NULL);
-        gtk_entry_set_icon_from_icon_name(GTK_ENTRY(input_nome),GTK_ENTRY_ICON_PRIMARY,NULL);
+        return 1;
     }
     
     
@@ -257,9 +226,7 @@ int confirmar_entrada()
    
     
     init_cripto(SENHA,juntar_dados,0,1);
-    
-    
-   
+
     free(lista_de_id);
     cancelar_entrada();
     adicionar_na_lista();
@@ -332,4 +299,36 @@ void adicionar_na_lista()
     gtk_widget_show_all(box);
     free(id);
     destruir(dados);
+}
+int css()
+{
+    char*diretorio=encontrar_diretorio("./layout/estilo.css");
+    if(diretorio==NULL)
+    {
+        free(diretorio);
+        diretorio=encontrar_diretorio("../layout/estilo.css");
+        if(diretorio==NULL)
+        {
+            free(diretorio);
+            return 1;
+        }
+    }
+    
+   
+    GtkCssProvider *provider;
+    GdkDisplay *display;
+    
+    provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(provider,diretorio,NULL);
+
+    //display = gdk_display_get_default();
+    display=gdk_screen_get_default();
+    gtk_style_context_add_provider_for_screen(
+        display,
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_USER
+    );
+    free(diretorio);
+    g_object_unref(provider);
+
 }

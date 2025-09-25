@@ -2,12 +2,18 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="stock">gtk-delete</property>
+  </object>
   <object class="GtkWindow" id="window2">
     <property name="can-focus">False</property>
     <property name="default-width">260</property>
     <property name="default-height">230</property>
     <child>
       <object class="GtkBox">
+        <property name="name">gtkbox_main</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
@@ -18,19 +24,16 @@
             <property name="vexpand">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
                   <object class="GtkButton" id="delete">
-                    <property name="label">gtk-delete</property>
+                    <property name="name">delete</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <property name="use-stock">True</property>
+                    <property name="image">image1</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -64,57 +67,117 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-start">50</property>
+                <property name="margin-top">11</property>
+                <property name="label" translatable="yes">Nome do Item</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Italic 8"/>
+                  <attribute name="style" value="normal"/>
+                  <attribute name="weight" value="thin"/>
+                  <attribute name="variant" value="normal"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input_item">
+              <object class="GtkEntry" id="atualizar_item">
+                <property name="name">input_main</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="margin-top">6</property>
                 <property name="hexpand">False</property>
                 <property name="primary-icon-tooltip-text" translatable="yes">AVISO: Nome do item obrigatorio</property>
                 <property name="primary-icon-tooltip-markup" translatable="yes">AVISO: Nome do item obrigatorio</property>
-                <property name="placeholder-text" translatable="yes">Nome do Item</property>
                 <property name="input-purpose">name</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input_usuario">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="halign">center</property>
-                <property name="margin-top">17</property>
-                <property name="margin-bottom">11</property>
-                <property name="hexpand">False</property>
-                <property name="placeholder-text" translatable="yes">Nome do Usuario</property>
-                <property name="input-purpose">name</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-start">50</property>
+                <property name="margin-top">14</property>
+                <property name="label" translatable="yes">Usuario</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Italic 8"/>
+                  <attribute name="style" value="normal"/>
+                  <attribute name="weight" value="thin"/>
+                  <attribute name="variant" value="normal"/>
+                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
+                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="input_senha">
+              <object class="GtkEntry" id="atualizar_usuario">
+                <property name="name">input_main</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="halign">center</property>
-                <property name="placeholder-text" translatable="yes">Senha </property>
+                <property name="margin-bottom">11</property>
+                <property name="hexpand">False</property>
+                <property name="input-purpose">name</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="halign">start</property>
+                <property name="margin-start">50</property>
+                <property name="label" translatable="yes">Senha</property>
+                <attributes>
+                  <attribute name="font-desc" value="Sans Italic 8"/>
+                  <attribute name="style" value="normal"/>
+                  <attribute name="weight" value="thin"/>
+                  <attribute name="variant" value="normal"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="atualizar_senha">
+                <property name="name">input_main</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="halign">center</property>
                 <property name="input-purpose">password</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">4</property>
+                <property name="fill">True</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
@@ -124,6 +187,7 @@
                 <child>
                   <object class="GtkButton" id="cancelar">
                     <property name="label" translatable="yes">cancelar</property>
+                    <property name="name">cancelar</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -152,6 +216,7 @@
                 <child>
                   <object class="GtkButton" id="alterar">
                     <property name="label" translatable="yes">alterar</property>
+                    <property name="name">cancelar</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -169,7 +234,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">7</property>
               </packing>
             </child>
           </object>

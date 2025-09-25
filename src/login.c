@@ -65,16 +65,16 @@ void confirmar_acao_login2()
         {
             free(senha2);
         }
-
+        int quantidade_linha = retornar_quantidade_init();
         char senha1[strlen(dados_senha) + strlen(dados_usuario) + 10];
 
         
-        int quantidade_linha = retornar_quantidade_init();
+       
         if (quantidade_linha == 0)
         {
 
             GtkWidget *confirm=GTK_WIDGET(gtk_builder_get_object(builder_login,"janela_confirmacao"));
-            GtkWidget * botao_confirmar=GTK_WIDGET(gtk_builder_get_object(builder_login,"botao_confirmar"));
+            GtkWidget * botao_confirmar=GTK_WIDGET(gtk_builder_get_object(builder_login,"segundo_confirmar"));
             g_signal_connect(botao_confirmar,"clicked",G_CALLBACK(janela_confirmar),NULL);
             gtk_widget_show_all(confirm);
         }
@@ -140,10 +140,10 @@ char *login_main(int verificar)
         free(caminho);
         // depois mudar o arquivo .glade pra xml
     }
-    GtkWidget *botao_confirmar = GTK_WIDGET(gtk_builder_get_object(builder_login, "botao_confirmar"));
+    GtkWidget *botao_confirmar = GTK_WIDGET(gtk_builder_get_object(builder_login, "confirmar_login"));
+    
 
-
-    g_signal_connect(botao_confirmar, "clicked", G_CALLBACK(janela_confirmar), NULL);
+    g_signal_connect(botao_confirmar, "clicked", G_CALLBACK(confirmar_acao_login2), NULL);
     conectar_botao_login();
     gtk_widget_show_all(window_login);
 
@@ -157,7 +157,7 @@ void conectar_botao_login()
     window_login = GTK_WIDGET(gtk_builder_get_object(builder_login, "login"));
     GtkWidget *confirmar_login = GTK_WIDGET(gtk_builder_get_object(builder_login, "confirmar_login"));
 
-    g_timeout_add(500, interatividade, NULL);
+   //g_timeout_add(500, interatividade, NULL);
     g_signal_connect(window_login, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(confirmar_login, "clicked", G_CALLBACK(confirmar_acao_login2), NULL);
 }

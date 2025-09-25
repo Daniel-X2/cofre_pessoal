@@ -1,0 +1,75 @@
+#usuario{
+    border-radius: 20px;
+    background-color: white;
+    color: #000000;
+    border-color: #3498DB;
+    font-size: 110%;
+}
+#senha{
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    border-color: #3498DB;
+    font-size: 110%;
+}
+
+#label_login{
+    color: aliceblue;
+    
+}
+#login{
+    background-image: -gtk-gradient (linear, left top, right bottom,
+    from(#84a8db),
+    color-stop(0.48, #84a8db),
+    to(#a4b5ba));
+
+}
+
+#confirmar_login{
+    border-radius: 50px;
+    background-color:#279957;
+    border-color: #2ECC71;
+}
+#confirmar_login:hover
+{
+    background-color:#20b15c;
+}
+#segundo_confirmar{
+    border-radius: 20px;
+}
+#segundo_cancelar
+{
+    border-radius: 20px;
+}
+
+#input_main{
+    border-radius: 50px;
+    background-color: white;
+    color: black;
+}
+#gtkbox_main{
+    background-color: #1a4085;
+}
+#grid_main{
+    background-color: #5780ce;
+
+}
+#salvar{
+        border-radius: 20px;
+}    
+#lista{
+    border-radius: 20px;
+}
+#lista:hover{
+    background-color: #1b4aa3;
+}
+#atualizar{
+    border-radius: 50px;
+    background-color: #7899d6;
+}
+#delete{
+    background-color: #1a4085;
+}
+#cancelar{
+      border-radius: 20px;
+}

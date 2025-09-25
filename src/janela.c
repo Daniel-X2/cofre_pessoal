@@ -43,9 +43,9 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
     window2 = GTK_WIDGET(gtk_builder_get_object(builder_janela, "window2"));
     g_signal_connect(window2, "destroy", G_CALLBACK(gtk_main_quit), NULL);
      
-    GtkWidget *   input_item=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_item"));
-    GtkWidget *  input_senha=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_usuario"));
-    GtkWidget * input_nome=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_senha"));
+    GtkWidget *   input_item=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_item"));
+    GtkWidget *  input_senha=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_usuario"));
+    GtkWidget * input_nome=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_senha"));
    GtkWidget * botao_deletar=GTK_WIDGET(gtk_builder_get_object(builder_janela,"delete"));
 
     
@@ -81,9 +81,9 @@ int window_dados(GtkWidget *widget, gpointer user_data) {
 void alterar()
 {
     
-    GtkWidget * input_item=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_item"));
-    GtkWidget * input_senha=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_usuario"));
-    GtkWidget * input_nome=GTK_WIDGET(gtk_builder_get_object(builder_janela,"input_senha"));
+    GtkWidget * input_item=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_item"));
+    GtkWidget * input_senha=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_usuario"));
+    GtkWidget * input_nome=GTK_WIDGET(gtk_builder_get_object(builder_janela,"atualizar_senha"));
     const char *nome=gtk_entry_get_text(GTK_ENTRY(input_nome));
     const char *nome_item=gtk_entry_get_text(GTK_ENTRY(input_item));
     const char *senha=gtk_entry_get_text(GTK_ENTRY(input_senha));

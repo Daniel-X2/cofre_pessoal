@@ -10,7 +10,7 @@
 
 #include "../include/login.h"
 gboolean adicionar_widget(gpointer verificador);
-
+int css();
 /**
  * @brief Destroi todos os widgets filhos de um container.
  * @param widget Widget filho a ser destruído.

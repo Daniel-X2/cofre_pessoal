@@ -21,21 +21,20 @@ Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:
 
 ## 📸 Screenshots da Aplicação
 
-### Tela Principal
-![Tela Principal](captura/captural.png)
-*Interface principal do aplicativo com lista de notas*
 
-### Adicionando Nova Nota
-![Nova Nota](screenshots/nova-nota.png)
-*Formulário para criação de novas notas seguras*
+### Login 
+![Login](captura/captura1.png)
+*Janela de login*
+
+### Tela Principal
+![Tela Principal](captura/captura2.png)
+*Interface principal do aplicativo *
+
+
 
 ### Visualizando Nota
-![Visualizar Nota](captura/visualizar-nota.png)
+![Visualizar Nota](captura/captura4.png)
 *Interface de leitura e edição de notas existentes*
-
-### Configurações
-![Login](captura/captura1.png)
-*Painel de configurações e preferências do usuário*
 
 ---
 

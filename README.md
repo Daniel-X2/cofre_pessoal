@@ -28,7 +28,7 @@ Este projeto é uma aplicação de desktop desenvolvida em **C**, que combina:
 
 ### Tela Principal
 ![Tela Principal](captura/captura2.png)
-*Interface principal do aplicativo *
+*Interface principal do aplicativo*
 
 
 

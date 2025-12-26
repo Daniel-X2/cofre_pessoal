@@ -6,9 +6,7 @@ GtkBuilder * builder;
 GtkWidget * window;          
   
 
-/**
- * @brief Função principal. Inicializa GTK, carrega interface, conecta sinais e exibe a janela.
- */
+//funçao inicial
 int main(int argc, char *argv[]) {
 
     gtk_init(&argc, &argv);
@@ -16,9 +14,6 @@ int main(int argc, char *argv[]) {
 
     char *caminho=encontrar_diretorio("./layout/interface.glade");
     int total;
-    //int id=
-
-    //int linha=retornar_quantidade_init();
     
     if (!caminho)
         {
@@ -38,17 +33,17 @@ int main(int argc, char *argv[]) {
             }
             else
                 {
-                    builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+                    builder = gtk_builder_new_from_file(caminho);
                     free(caminho);
                     fechar_banco_init();
                 }
         }
     else
         {
-            builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+            builder = gtk_builder_new_from_file(caminho);
             free(caminho);
         }
-    //builder = gtk_builder_new_from_file(caminho);//depois mudar o arquivo .glade pra xml
+    
     int total_linha=retornar_quantidade_init();
     get_object_gtk();
     css();
@@ -302,6 +297,7 @@ void adicionar_na_lista()
 }
 int css()
 {
+    //essa funçao pega o estilo.css
     char*diretorio=encontrar_diretorio("./layout/estilo.css");
     if(diretorio==NULL)
     {

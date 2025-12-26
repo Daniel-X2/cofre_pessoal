@@ -53,10 +53,7 @@ dkms.conf
 meuapp
 layout/interface.glade~
 meuapp
-teste_criptografia/.vscode/c_cpp_properties.json
-teste_criptografia/.vscode/launch.json
-teste_criptografia/.vscode/settings.json
-teste_criptografia/.vscode/tasks.json
+
 build/.ninja_deps
 /build
 meu_banco.db

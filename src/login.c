@@ -58,8 +58,7 @@ void confirmar_acao_login2()
     }
     else
     {
-        // gtk_entry_set_icon_from_icon_name(GTK_ENTRY(usuario),GTK_ENTRY_ICON_PRIMARY,NULL);
-        // gtk_entry_set_icon_from_icon_name(GTK_ENTRY(senha),GTK_ENTRY_ICON_PRIMARY,NULL);
+ 
         //  Liberar memória anterior se existir
         if (senha2 != NULL)
         {

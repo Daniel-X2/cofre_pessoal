@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Projeto que suporta C e C++
-project(teste_com_glade LANGUAGES C CXX)
+
+project(cofre_pessoal LANGUAGES C CXX)
 
 # Padrão das linguagens
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)          # Padrão C++ moderno
+set(CMAKE_CXX_STANDARD 17)          
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Encontrar pacotes
